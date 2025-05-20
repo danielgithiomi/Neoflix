@@ -33,8 +33,8 @@ const MovieCard = (props: MovieCardProps) => {
 
             <div className="overlay">
 
-                <div className="favourite" onClick={handleFavouriteClick}>
-                    <FaHeart className={favourite ? 'text-red-500' : 'text-white'} size={15}/>
+                <div className="favourite z-[15]" onClick={handleFavouriteClick}>
+                    <FaHeart className={favourite ? 'text-red-500' : 'text-white'} size={20}/>
                 </div>
 
                 <NavLink to={`/details/${id}`}>

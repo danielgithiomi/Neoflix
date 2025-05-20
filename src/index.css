@@ -141,7 +141,7 @@ button:focus-visible {
 
             & .favourite {
                 animation: reveal var(--custom-animation-duration);
-                @apply block absolute right-4 top-4 z-10;
+                @apply block absolute right-4 top-4 z-10 cursor-pointer;
             }
 
             & .play {
