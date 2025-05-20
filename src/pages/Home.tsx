@@ -7,12 +7,14 @@ import { useQuery } from "@tanstack/react-query";
 import Trending from "../components/Trending.tsx";
 import MovieCard from "../components/MovieCard.tsx";
 import { fetchMovies } from "../services/MovieService.ts";
+import Error from "../components/Error.tsx";
 
 const Home = () => {
 
     // State Managers
     const [search, setSearch] = useState<string>("")
     const [searchDebounce, setSearchDebounce] = useState("");
+    const titleClassname = "text-white uppercase text-3xl font-bold my-4 text-center"
 
     // Debounce
     useDebounce(() => setSearchDebounce(search.trim()), 500, [search]);
@@ -27,18 +29,15 @@ const Home = () => {
         queryFn: () => fetchMovies(searchDebounce),
     });
 
-    if (isMoviesError)
-        return <div className="text-red-600">There was an error: {movieFetchError.message}</div>
-
     return (
         <>
             <div className="pattern" />
 
             <Banner />
 
-            <Search searchTerm={search} setSearchTerm={setSearch} />
+            {!isMoviesError && <Search searchTerm={search} setSearchTerm={setSearch} />}
 
-            <Trending />
+            {!isMoviesError && <Trending />}
 
             {isFetchingMovies && (
                 <div className="text-gray-500 uppercase text-center">
@@ -46,13 +45,22 @@ const Home = () => {
                 </div>
             )}
 
-            {fetchedMovies?.length
+            {isMoviesError && (
+                <div className="text-red-600 w-full grid place-items-center">
+                    <Error
+                    message={`Movie fetching failed with error: ${movieFetchError}`}
+                    lottieAnimation={true}
+                />
+                </div>
+            )}
+
+            {!isMoviesError && fetchedMovies?.length
                 ? (
                     <section className="all-movies">
 
                         {!search
-                            ? <p className="text-white uppercase text-3xl font-bold my-4 text-center">Explore <span className="text-gradient">Movies</span> Now!</p>
-                            : <p className="text-white uppercase text-3xl font-bold my-4 text-center">Movie Results for: <span className="text-gradient">{search}</span> </p>
+                            ? <p className={titleClassname}>Explore <span className="text-gradient">Movies</span> Now!</p>
+                            : <p className={titleClassname}>Movie Results for: <span className="text-gradient">{search}</span> </p>
                         }
 
                         <ul>
@@ -63,7 +71,7 @@ const Home = () => {
                         </ul>
                     </section>
                 )
-                : !isFetchingMovies && (
+                : (!isMoviesError && !isFetchingMovies) && (
                     <p className="text-center text-red-600 text-2xl uppercase">No Movies Found!</p>
                 )}
         </>
