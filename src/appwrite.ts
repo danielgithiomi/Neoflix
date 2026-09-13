@@ -1,5 +1,5 @@
-import { AppwriteException, Client, Databases, ID, Query } from 'appwrite';
 import Movie from './data/Movie';
+import { Client, Databases, ID, Query, AppwriteException } from 'appwrite';
 
 const appwrite_project_id: string = import.meta.env.VITE_APPWRITE_PROJECT_ID;
 const appwrite_database_id: string = import.meta.env.VITE_APPWRITE_MOVIE_DATABASE_ID;
@@ -42,8 +42,8 @@ export const updateTrendingMoviesCount = async (searchTerm: string, movie: Movie
          });
 
       }
-   } catch (error: AppwriteException) {
-      alert(error.message);
+   } catch (error: unknown) {
+      alert((error as AppwriteException).message);
    }
 
 }
@@ -63,8 +63,8 @@ export const fetchTrendingMovies = async () => {
 
       return trending_movies.documents;
 
-   } catch (error: AppwriteException) {
-      alert(error.message);
+   } catch (error: unknown) {
+      alert((error as AppwriteException).message);
    }
 
 }
