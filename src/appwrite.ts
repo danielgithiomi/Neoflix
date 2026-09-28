@@ -1,15 +1,24 @@
 import Movie from './data/Movie';
-import { Client, Databases, ID, Query, AppwriteException } from 'appwrite';
+import { Client, Databases, Storage, ID, Query, AppwriteException } from 'appwrite';
 
+const appwrite_base_url: string = import.meta.env.VITE_APPWRITE_BASE_URL;
 const appwrite_project_id: string = import.meta.env.VITE_APPWRITE_PROJECT_ID;
 const appwrite_database_id: string = import.meta.env.VITE_APPWRITE_MOVIE_DATABASE_ID;
 const appwrite_schema_id: string = import.meta.env.VITE_APPWRITE_MOVIE_DATABASE_SCHEMA_ID;
+const appwrite_storage_bucket_id: string = import.meta.env.VITE_APPWRITE_STORAGE_BUCKET_ID;
 
 const appwrite_client = new Client()
-   .setEndpoint("https://cloud.appwrite.io/v1")
+   .setEndpoint(appwrite_base_url)
    .setProject(appwrite_project_id);
 
 const appwrite_database = new Databases(appwrite_client);
+const appwrite_storage_bucket = new Storage(appwrite_client);
+
+export const getUserProfilePictureUrl = (user_profile_picture_id: string) => {
+   const result = appwrite_storage_bucket.getFileView(appwrite_storage_bucket_id, user_profile_picture_id);
+   console.warn("User Profile Picture URL", result);
+   return result;
+};
 
 export const updateTrendingMoviesCount = async (searchTerm: string, movie: Movie) => {
 

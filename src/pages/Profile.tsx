@@ -1,132 +1,182 @@
-import { SEX } from "../data/Sex";
 import User from "../data/User";
+import { SEX } from "../data/Sex";
 import { FormEvent, useEffect, useRef, useState } from "react";
 
 interface ProfileProps {
-   user: User
+    user: User;
 }
+
 const Profile = ({ user }: ProfileProps) => {
+    const genders = Object.keys(SEX);
+    const [username, setUsername] = useState(user.username);
+    const [lastName, setLastName] = useState(user.last_name);
+    const [firstName, setFirstname] = useState(user.first_name);
 
-   const genders = Object.keys(SEX);
-   const [firstName, setFirstname] = useState(user.first_name);
-   const [lastName, setLastName] = useState(user.last_name);
-   const [username, setUsername] = useState(user.username);
-   const gender = useRef<HTMLSelectElement>();
-   const emailAddress = useRef<HTMLInputElement>();
-   const password = useRef<HTMLInputElement>();
+    const gender = useRef<HTMLSelectElement | null>(null);
+    const password = useRef<HTMLInputElement | null>(null);
+    const emailAddress = useRef<HTMLInputElement | null>(null);
 
-   useEffect(() => {
+    useEffect(() => {
+        // Check length
+        if (firstName.length < 3 || lastName.length < 3) {
+            setUsername("Not Enough Characters".toUpperCase());
+            return;
+        }
 
-      // Check length
-      if (firstName.length < 3 || lastName.length < 3) {
-         setUsername(("Not Enough Characters").toUpperCase());
-         return;
-      }
+        const newUsername =
+            firstName.substring(0, 3).toUpperCase() +
+            lastName.substring(0, 3).toUpperCase();
+        setUsername(newUsername);
+    }, [firstName, lastName]);
 
-      const newUsername = firstName.substring(0, 3).toUpperCase() + lastName.substring(0, 3).toUpperCase();
-      setUsername(newUsername)
+    const submitForm = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
 
-   }, [firstName, lastName]);
+        const newUser: User = {
+            profile_image_url: user.profile_image_url,
+            first_name: firstName,
+            last_name: lastName,
+            username,
+            gender: gender.current?.value as SEX,
+            email_address: emailAddress.current?.value as string,
+            password: password.current?.value as string,
+        };
 
-   const submitForm = (e: FormEvent<HTMLFormElement>) => {
+        console.log("User", newUser);
 
-      e.preventDefault();
+        alert("Form submitted successfully");
+    };
 
-      const newUser: User = {
-         profile_image_url: user.profile_image_url,
-         first_name: firstName,
-         last_name: lastName,
-         username,
-         gender: gender.current?.value as SEX,
-         email_address: emailAddress.current?.value as string,
-         password: password.current?.value as string
-      }
+    console.log("User", user);
 
-      console.log("User", newUser);
+    return (
+        <section id="profile" className="flex flex-col mt-8 min-h-[80vh]">
+            <p className="font-bold text-white text-3xl text-center uppercase">
+                View <span className="text-gradient">Profile</span> Details
+            </p>
 
-      alert("Form submitted successfully")
+            <section className="flex flex-row justify-center items-center gap-8 p-10 profile-details grow">
+                <div className="flex justify-center w-[30%]">
+                    <div className="profile-picture">
+                        <div className="overlay"></div>
+                        <img
+                            src={user.profile_image_url}
+                            alt="Profile picture"
+                        />
+                    </div>
+                </div>
 
-   }
+                <div className="grow">
+                    <form className="profile-form" onSubmit={submitForm}>
+                        <div className="flex flex-row justify-start gap-10">
+                            <div className="flex flex-col flex-1 first-name">
+                                <label htmlFor="first_name">First Name:</label>
+                                <input
+                                    required
+                                    type="text"
+                                    id="first_name"
+                                    name="first_name"
+                                    value={firstName}
+                                    autoComplete="given-name"
+                                    placeholder="Enter First Name..."
+                                    onChange={(e) =>
+                                        setFirstname(e.target.value)
+                                    }
+                                />
+                            </div>
 
-   return (
-      <section id="profile" className="min-h-[80vh] mt-8 flex flex-col">
+                            <div className="flex flex-col flex-1 last-name">
+                                <label htmlFor="last_name">Last Name:</label>
+                                <input
+                                    required
+                                    type="text"
+                                    id="last_name"
+                                    name="last_name"
+                                    value={lastName}
+                                    autoComplete="family-name"
+                                    placeholder="Enter Last Name..."
+                                    onChange={(e) =>
+                                        setLastName(e.target.value)
+                                    }
+                                />
+                            </div>
+                        </div>
 
-         <p className="text-3xl text-white uppercase font-bold text-center">View <span className="text-gradient">Profile</span> Details</p>
+                        <div className="flex flex-row justify-start gap-10">
+                            <div className="flex flex-col flex-1 username">
+                                <label htmlFor="username">Username:</label>
+                                <input
+                                    disabled
+                                    type="text"
+                                    id="username"
+                                    name="username"
+                                    value={username}
+                                    autoComplete="username"
+                                    placeholder="Username will appear here"
+                                />
+                            </div>
 
-         <section className="profile-details flex flex-row items-center justify-center gap-8 p-10 grow">
+                            <div className="flex flex-col flex-1 gender">
+                                <label htmlFor="gender">Gender:</label>
+                                <select
+                                    id="gender"
+                                    ref={gender}
+                                    value={user.gender}
+                                >
+                                    {genders.map((gender, index) => (
+                                        <option key={index} value={gender}>
+                                            {gender}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
 
-            <div className="w-[30%] flex justify-center">
-               <div className="profile-picture">
-                  <div className="overlay"></div>
-                  <img src={user.profile_image_url} alt="Profile picture" />
-               </div>
-            </div>
+                        <div className="flex flex-row justify-start gap-10">
+                            <div className="flex flex-col flex-1 email-address">
+                                <label htmlFor="email_address">
+                                    Email Address:
+                                </label>
+                                <input
+                                    required
+                                    type="email"
+                                    id="email_address"
+                                    ref={emailAddress}
+                                    name="email_address"
+                                    autoComplete="email"
+                                    value={user.email_address}
+                                    placeholder="Enter Email Address..."
+                                />
+                            </div>
 
-            <div className="grow">
+                            <div className="flex flex-col flex-1 password">
+                                <label htmlFor="password">Password:</label>
+                                <input
+                                    required
+                                    id="password"
+                                    ref={password}
+                                    type="password"
+                                    name="password"
+                                    value={user.password}
+                                    placeholder="Enter Password..."
+                                />
+                            </div>
+                        </div>
 
-               <form className="profile-form" onSubmit={submitForm}>
+                        <div>
+                            <button
+                                type="submit"
+                                className="submit-btn"
+                                value="submit"
+                            >
+                                {user ? "Update" : "Submit"}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </section>
+    );
+};
 
-                  <div className="flex flex-row justify-start gap-10">
-
-                     <div className="first-name flex-1 flex flex-col">
-                        <label htmlFor="first_name">First Name:</label>
-                        <input type="text" id="first_name" name="first_name" required placeholder="Enter First Name..." value={firstName} onChange={(e) => setFirstname(e.target.value)} />
-                     </div>
-
-                     <div className="last-name flex-1 flex flex-col">
-                        <label htmlFor="last_name">Last Name:</label>
-                        <input type="text" id="last_name" name="flast_name" required placeholder="Enter Last Name..." value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                     </div>
-
-                  </div>
-
-                  <div className="flex flex-row justify-start gap-10">
-
-                     <div className="username flex-1 flex flex-col">
-                        <label htmlFor="username">Username:</label>
-                        <input type="text" id="username" name="username" placeholder="Username will appear here" disabled value={username} />
-                     </div>
-
-                     <div className="gender flex-1 flex flex-col">
-                        <label htmlFor="gender">Gender:</label>
-                        <select ref={gender} value={user.gender}>
-                           {
-                              genders.map((gender, index) => (
-                                 <option key={index} value={gender}>{gender}</option>
-                              ))
-                           }
-                        </select>
-                     </div>
-
-                  </div>
-
-                  <div className="flex flex-row justify-start gap-10">
-
-                     <div className="email-address flex-1 flex flex-col">
-                        <label htmlFor="email_address">Email Address:</label>
-                        <input type="email" id="email_address" name="email_address" required placeholder="Enter Email Address..." value={user.email_address} ref={emailAddress} />
-                     </div>
-
-                     <div className="password flex-1 flex flex-col">
-                        <label htmlFor="password">Password:</label>
-                        <input type="password" id="password" name="password" required placeholder="Enter Password..." value={user.password} ref={password} />
-                     </div>
-
-                  </div>
-
-                  <div>
-                     <button type="submit" className="submit-btn" value="submit">{user ? 'Update' : 'Submit'}</button>
-                  </div>
-
-               </form>
-
-            </div>
-
-         </section>
-
-      </section>
-   )
-
-}
-
-export default Profile
+export default Profile;

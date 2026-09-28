@@ -4,9 +4,11 @@ import appLogo from '../assets/images/app_logo.png';
 import { NavLink, NavLinkRenderProps } from "react-router-dom";
 import { FaArrowCircleDown, FaBell, FaSearch } from "react-icons/fa";
 
-const Header = () => {
+interface HomeProps {
+    userProfilePictureUrl: string;
+}
 
-    const profile_placeholder: string = "https://www.strasys.uk/wp-content/uploads/2022/02/Depositphotos_484354208_S.jpg";
+const Header = ({ userProfilePictureUrl }: HomeProps) => {
 
     const activeLink = ({ isActive }: NavLinkRenderProps): CSSProperties => {
         return isActive
@@ -20,31 +22,31 @@ const Header = () => {
     }
 
     return (
-        <div className="flex flex-row items-center justify-between">
+        <div className="flex flex-row justify-between items-center">
 
             <NavLink to={"/"}>
-                <div className="logo brand flex items-center">
+                <div className="flex items-center logo brand">
                     <img src={appLogo} alt="App Logo" className="logo" />
-                    <h3 className="brand-text uppercase text-4xl text-red-600 font-extrabold tracking-wide">Neoflix</h3>
+                    <h3 className="font-extrabold text-red-600 text-4xl uppercase tracking-wide brand-text">Neoflix</h3>
                 </div>
             </NavLink>
 
             <nav>
-                <ul className="nav-links uppercase">
-                    <NavLink style={activeLink} className="link text-white hover:text-red-500" to='/'>Home</NavLink>
-                    <NavLink style={activeLink} className="link text-white hover:text-red-500" to='/favourites'>Favourites</NavLink>
+                <ul className="uppercase nav-links">
+                    <NavLink style={activeLink} className="text-white hover:text-red-500 link" to='/'>Home</NavLink>
+                    <NavLink style={activeLink} className="text-white hover:text-red-500 link" to='/favourites'>Favourites</NavLink>
                 </ul>
             </nav>
 
-            <div className="user flex flex-row items-center gap-5 mr-20">
+            <div className="flex flex-row items-center gap-5 mr-20 user">
                 <NavLink to="/">
-                    <FaSearch className="icon text-white hover:text-red-500" size={20} />
+                    <FaSearch className="text-white hover:text-red-500 icon" size={20} />
                 </NavLink>
-                <FaBell className="icon text-white hover:text-red-500" size={20} />
+                <FaBell className="text-white hover:text-red-500 icon" size={20} />
 
-                <NavLink to="/profile" className="user-profile flex flex-row items-center gap-1">
-                    <div className="border-red-600 border-2 rounded-full overflow-hidden">
-                        <img src={profile_placeholder} alt="Profile Picture" className="h-[50px] w-[50px]" />
+                <NavLink to="/profile" className="flex flex-row items-center gap-1 user-profile">
+                    <div className="border-2 border-red-600 rounded-full overflow-hidden">
+                        <img src={userProfilePictureUrl} alt="Profile Picture" className="w-[50px] h-[50px]" />
                     </div>
                     <FaArrowCircleDown className='text-red-600' size={15} />
                 </NavLink>

@@ -1,13 +1,13 @@
 import { useState } from "react";
 import Movie from "../data/Movie.ts";
 import { useDebounce } from 'react-use';
+import Error from "../components/Error.tsx";
 import Banner from "../components/Banner.tsx";
 import Search from "../components/Search.tsx";
 import { useQuery } from "@tanstack/react-query";
 import Trending from "../components/Trending.tsx";
 import MovieCard from "../components/MovieCard.tsx";
 import { fetchMovies } from "../services/MovieService.ts";
-import Error from "../components/Error.tsx";
 
 const Home = () => {
 
@@ -29,6 +29,8 @@ const Home = () => {
         queryFn: () => fetchMovies(searchDebounce),
     });
 
+    
+
     return (
         <>
             <div className="pattern" />
@@ -40,13 +42,13 @@ const Home = () => {
             {!isMoviesError && <Trending />}
 
             {isFetchingMovies && (
-                <div className="text-gray-500 uppercase text-center">
+                <div className="text-gray-500 text-center uppercase">
                     <p>Loading. Please wait...</p>
                 </div>
             )}
 
             {isMoviesError && (
-                <div className="text-red-600 w-full grid place-items-center">
+                <div className="place-items-center grid w-full text-red-600">
                     <Error
                     message={`Movie fetching failed with error: ${movieFetchError}`}
                     lottieAnimation={true}
@@ -72,7 +74,7 @@ const Home = () => {
                     </section>
                 )
                 : (!isMoviesError && !isFetchingMovies) && (
-                    <p className="text-center text-red-600 text-2xl uppercase">No Movies Found!</p>
+                    <p className="text-red-600 text-2xl text-center uppercase">No Movies Found!</p>
                 )}
         </>
     )

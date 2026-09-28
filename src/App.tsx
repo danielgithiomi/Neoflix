@@ -1,4 +1,5 @@
 import './App.css'
+import { useState } from 'react';
 import User from './data/User.ts';
 import Home from "./pages/Home.tsx";
 import { SEX } from './data/Sex.ts';
@@ -7,25 +8,33 @@ import Header from "./components/Header.tsx";
 import ErrorComponent from './pages/Error.tsx';
 import Favourites from "./pages/Favourites.tsx";
 import { Route, Routes } from "react-router-dom";
+import { useQuery } from '@tanstack/react-query';
 import MovieDetails from "./pages/MovieDetails.tsx";
 import { FavouriteProvider } from "./contexts/FavouriteContext.tsx";
+import { getAppwriteUserProfilePictureUrl } from './services/UserService.ts';
 
 function App() {
+    const [userProfilePictureId] = useState<string>("6aba6fab000787dcb54e");
+
+    const resourceUrl = useQuery({
+        queryKey: ["user_profile_picture", userProfilePictureId],
+        queryFn: () => getAppwriteUserProfilePictureUrl(userProfilePictureId),
+    });
 
     const currentUser: User = {
-        profile_image_url: "https://www.strasys.uk/wp-content/uploads/2022/02/Depositphotos_484354208_S.jpg",
-        first_name: "John",
         last_name: "Doe",
+        gender: SEX.MALE,
         username: "JOHDOE",
-        gender: SEX.OTHER,
+        first_name: "John",
+        password: "password123",
         email_address: "john.doe@example.com",
-        password: "password123"
+        profile_image_url: resourceUrl.data as string,
     }
 
     return (
         <main className="flex flex-col">
 
-            <Header />
+            <Header userProfilePictureUrl={resourceUrl.data as string} />
 
             <section className="content grow">
                 <FavouriteProvider>
