@@ -72,9 +72,13 @@ Git clone [this](https://github.com/githiomi/Neoflix) repository
   ``` (dotenv)
     VITE_TMDB_API_KEY=
     VITE_TMDB_API_TOKEN=
+    
+    VITE_APPWRITE_BASE_URL=
     VITE_APPWRITE_PROJECT_ID=
     VITE_APPWRITE_MOVIE_DATABASE_ID=
+    VITE_APPWRITE_STORAGE_BUCKET_ID=
     VITE_APPWRITE_MOVIE_DATABASE_SCHEMA_ID=
+    VITE_APPWRITE_USER_PROFILE_PICTURE_RESOURCE_ID=
     ```
 - Launch the application by running the following command
     ``` (bash)
