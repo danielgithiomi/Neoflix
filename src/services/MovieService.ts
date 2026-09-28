@@ -1,8 +1,8 @@
 import axios from "axios";
 import Movie from "../data/Movie";
 import Response from "../data/Response";
-import {MovieSpecs} from "../data/MovieSpecs.ts";
-import {fetchTrendingMovies, updateTrendingMoviesCount} from '../appwrite.ts';
+import { MovieSpecs } from "../data/MovieSpecs.ts";
+import { fetchTrendingMovies, updateTrendingMoviesCount } from "../appwrite.ts";
 
 // Constants
 const API_BASE_URL: string = "https://api.themoviedb.org/3" as string;
@@ -11,16 +11,15 @@ const API_OPTIONS = {
     method: "GET",
     headers: {
         accept: "application/json",
-        Authorization: `Bearer ${API_KEY}`
-    }
-}
+        Authorization: `Bearer ${API_KEY}`,
+    },
+};
 
 export const convertMovieSpecToMovie = (movie: MovieSpecs): Movie => {
-
     return {
         adult: movie!.adult,
         backdrop_path: movie!.backdrop_path,
-        genre_ids: movie!.genres.map(genre => genre.id),
+        genre_ids: movie!.genres.map((genre) => genre.id),
         id: movie!.id,
         original_language: movie!.original_language,
         original_title: movie!.original_title,
@@ -31,12 +30,13 @@ export const convertMovieSpecToMovie = (movie: MovieSpecs): Movie => {
         title: movie!.title,
         video: movie!.video,
         vote_average: movie!.vote_average,
-        vote_count: movie!.vote_count
-    }
-}
+        vote_count: movie!.vote_count,
+    };
+};
 
-export const fetchMovies = async (searchQuery: string = ""): Promise<Movie[]> => {
-
+export const fetchMovies = async (
+    searchQuery: string = "",
+): Promise<Movie[]> => {
     const endpoint: string = searchQuery
         ? `${API_BASE_URL}/search/movie?query=${encodeURI(searchQuery)}}`
         : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
@@ -44,8 +44,8 @@ export const fetchMovies = async (searchQuery: string = ""): Promise<Movie[]> =>
     const result = await axios.get(endpoint, API_OPTIONS);
 
     if (result.status != 200) {
-        alert('Error occurred while fetching movies');
-        throw new Error('Error occurred while fetching movies');
+        alert("Error occurred while fetching movies");
+        throw new Error("Error occurred while fetching movies");
     }
 
     const response: Response = await result.data;
@@ -56,19 +56,15 @@ export const fetchMovies = async (searchQuery: string = ""): Promise<Movie[]> =>
     }
 
     return movies;
-
-}
+};
 
 export const fetchMovieById = async (movieId: string): Promise<MovieSpecs> => {
-
     const endpoint: string = `${API_BASE_URL}/movie/${movieId}`;
 
     const api_result = await axios.get(endpoint, API_OPTIONS);
     return await api_result.data;
-}
+};
 
 export const getTrendingMovies = async () => {
-
     return await fetchTrendingMovies();
-
-}
+};

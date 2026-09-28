@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Movie from "../data/Movie.ts";
-import { useDebounce } from 'react-use';
+import { useDebounce } from "react-use";
 import Error from "../components/Error.tsx";
 import Banner from "../components/Banner.tsx";
 import Search from "../components/Search.tsx";
@@ -10,11 +10,11 @@ import MovieCard from "../components/MovieCard.tsx";
 import { fetchMovies } from "../services/MovieService.ts";
 
 const Home = () => {
-
     // State Managers
-    const [search, setSearch] = useState<string>("")
+    const [search, setSearch] = useState<string>("");
     const [searchDebounce, setSearchDebounce] = useState("");
-    const titleClassname = "text-white uppercase text-3xl font-bold my-4 text-center"
+    const titleClassname =
+        "text-white uppercase text-3xl font-bold my-4 text-center";
 
     // Debounce
     useDebounce(() => setSearchDebounce(search.trim()), 500, [search]);
@@ -23,13 +23,11 @@ const Home = () => {
         data: fetchedMovies,
         isPending: isFetchingMovies,
         isError: isMoviesError,
-        error: movieFetchError
+        error: movieFetchError,
     } = useQuery({
         queryKey: ["Movies", searchDebounce],
         queryFn: () => fetchMovies(searchDebounce),
     });
-
-    
 
     return (
         <>
@@ -37,7 +35,9 @@ const Home = () => {
 
             <Banner />
 
-            {!isMoviesError && <Search searchTerm={search} setSearchTerm={setSearch} />}
+            {!isMoviesError && (
+                <Search searchTerm={search} setSearchTerm={setSearch} />
+            )}
 
             {!isMoviesError && <Trending />}
 
@@ -50,34 +50,42 @@ const Home = () => {
             {isMoviesError && (
                 <div className="place-items-center grid w-full text-red-600">
                     <Error
-                    message={`Movie fetching failed with error: ${movieFetchError}`}
-                    lottieAnimation={true}
-                />
+                        message={`Movie fetching failed with error: ${movieFetchError}`}
+                        lottieAnimation={true}
+                    />
                 </div>
             )}
 
-            {!isMoviesError && fetchedMovies?.length
-                ? (
-                    <section className="all-movies">
+            {!isMoviesError && fetchedMovies?.length ? (
+                <section className="all-movies">
+                    {!search ? (
+                        <p className={titleClassname}>
+                            Explore{" "}
+                            <span className="text-gradient">Movies</span> Now!
+                        </p>
+                    ) : (
+                        <p className={titleClassname}>
+                            Movie Results for:{" "}
+                            <span className="text-gradient">{search}</span>{" "}
+                        </p>
+                    )}
 
-                        {!search
-                            ? <p className={titleClassname}>Explore <span className="text-gradient">Movies</span> Now!</p>
-                            : <p className={titleClassname}>Movie Results for: <span className="text-gradient">{search}</span> </p>
-                        }
-
-                        <ul>
-                            {
-                                fetchedMovies.map(
-                                    (movie: Movie) => <MovieCard key={movie.id} movie={movie} />)
-                            }
-                        </ul>
-                    </section>
+                    <ul>
+                        {fetchedMovies.map((movie: Movie) => (
+                            <MovieCard key={movie.id} movie={movie} />
+                        ))}
+                    </ul>
+                </section>
+            ) : (
+                !isMoviesError &&
+                !isFetchingMovies && (
+                    <p className="text-red-600 text-2xl text-center uppercase">
+                        No Movies Found!
+                    </p>
                 )
-                : (!isMoviesError && !isFetchingMovies) && (
-                    <p className="text-red-600 text-2xl text-center uppercase">No Movies Found!</p>
-                )}
+            )}
         </>
-    )
-}
+    );
+};
 
-export default Home
+export default Home;

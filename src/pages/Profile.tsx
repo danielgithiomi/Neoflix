@@ -47,8 +47,6 @@ const Profile = ({ user }: ProfileProps) => {
         alert("Form submitted successfully");
     };
 
-    console.log("User", user);
-
     return (
         <section id="profile" className="flex flex-col mt-8 min-h-[80vh]">
             <p className="font-bold text-white text-3xl text-center uppercase">
