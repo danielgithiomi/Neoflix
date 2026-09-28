@@ -15,9 +15,7 @@ const appwrite_database = new Databases(appwrite_client);
 const appwrite_storage_bucket = new Storage(appwrite_client);
 
 export const getUserProfilePictureUrl = (user_profile_picture_id: string) => {
-   const result = appwrite_storage_bucket.getFileView(appwrite_storage_bucket_id, user_profile_picture_id);
-   console.warn("User Profile Picture URL", result);
-   return result;
+   return appwrite_storage_bucket.getFileView(appwrite_storage_bucket_id, user_profile_picture_id);
 };
 
 export const updateTrendingMoviesCount = async (searchTerm: string, movie: Movie) => {

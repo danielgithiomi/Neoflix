@@ -1,5 +1,4 @@
 import './App.css'
-import { useState } from 'react';
 import User from './data/User.ts';
 import Home from "./pages/Home.tsx";
 import { SEX } from './data/Sex.ts';
@@ -11,10 +10,9 @@ import { Route, Routes } from "react-router-dom";
 import { useQuery } from '@tanstack/react-query';
 import MovieDetails from "./pages/MovieDetails.tsx";
 import { FavouriteProvider } from "./contexts/FavouriteContext.tsx";
-import { getAppwriteUserProfilePictureUrl } from './services/UserService.ts';
+import { getAppwriteUserProfilePictureUrl, userProfilePictureId } from './services/UserService.ts';
 
 function App() {
-    const [userProfilePictureId] = useState<string>("6aba6fab000787dcb54e");
 
     const resourceUrl = useQuery({
         queryKey: ["user_profile_picture", userProfilePictureId],
