@@ -14,12 +14,8 @@ const appwrite_client = new Client()
 const appwrite_database = new Databases(appwrite_client);
 const appwrite_storage_bucket = new Storage(appwrite_client);
 
-export const getUserProfilePictureUrl = (user_profile_picture_id: string) => {
-   console.log(`Fetching user profile picture with ID: ${user_profile_picture_id}`);
-   console.log(`Using Appwrite storage bucket ID: ${appwrite_storage_bucket_id}`);
-   console.log(`Using Appwrite base URL: ${appwrite_base_url}`);
-   return appwrite_storage_bucket.getFileView(appwrite_storage_bucket_id, user_profile_picture_id);
-};
+export const getUserProfilePictureUrl = (user_profile_picture_id: string) => 
+   appwrite_storage_bucket.getFileView(appwrite_storage_bucket_id, user_profile_picture_id);
 
 export const updateTrendingMoviesCount = async (searchTerm: string, movie: Movie) => {
 

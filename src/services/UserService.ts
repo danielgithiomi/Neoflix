@@ -5,6 +5,4 @@ export const userProfilePictureId = import.meta.env
 
 export const getAppwriteUserProfilePictureUrl = (
     user_profile_picture_id: string = userProfilePictureId,
-) => {
-    return getUserProfilePictureUrl(user_profile_picture_id);
-};
+) => getUserProfilePictureUrl(user_profile_picture_id);
