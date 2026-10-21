@@ -31,17 +31,30 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Each value can be stored as a repository secret or a repository variable
       - name: Build
-        run: npm run build
+        run: |
+          missing=0
+          for name in VITE_TMDB_API_KEY VITE_TMDB_API_TOKEN VITE_APPWRITE_PROJECT_ID \
+            VITE_APPWRITE_MOVIE_DATABASE_ID VITE_APPWRITE_MOVIE_DATABASE_SCHEMA_ID \
+            VITE_APPWRITE_BASE_URL VITE_APPWRITE_STORAGE_BUCKET_ID \
+            VITE_APPWRITE_USER_PROFILE_PICTURE_RESOURCE_ID; do
+            if [ -z "${!name}" ]; then
+              echo "::error::$name is empty. Add it under Settings → Secrets and variables → Actions."
+              missing=1
+            fi
+          done
+          [ "$missing" -eq 0 ] || exit 1
+          npm run build
         env:
-          VITE_TMDB_API_KEY: ${{ secrets.VITE_TMDB_API_KEY }}
-          VITE_TMDB_API_TOKEN: ${{ secrets.VITE_TMDB_API_TOKEN }}
-          VITE_APPWRITE_PROJECT_ID: ${{ secrets.VITE_APPWRITE_PROJECT_ID }}
-          VITE_APPWRITE_MOVIE_DATABASE_ID: ${{ secrets.VITE_APPWRITE_MOVIE_DATABASE_ID }}
-          VITE_APPWRITE_MOVIE_DATABASE_SCHEMA_ID: ${{ secrets.VITE_APPWRITE_MOVIE_DATABASE_SCHEMA_ID }}
-          VITE_APPWRITE_BASE_URL: ${{ secrets.VITE_APPWRITE_BASE_URL }}
-          VITE_APPWRITE_STORAGE_BUCKET_ID: ${{ secrets.VITE_APPWRITE_STORAGE_BUCKET_ID }}
-          VITE_APPWRITE_USER_PROFILE_PICTURE_RESOURCE_ID: ${{ secrets.VITE_APPWRITE_USER_PROFILE_PICTURE_RESOURCE_ID }}
+          VITE_TMDB_API_KEY: ${{ secrets.VITE_TMDB_API_KEY || vars.VITE_TMDB_API_KEY }}
+          VITE_TMDB_API_TOKEN: ${{ secrets.VITE_TMDB_API_TOKEN || vars.VITE_TMDB_API_TOKEN }}
+          VITE_APPWRITE_PROJECT_ID: ${{ secrets.VITE_APPWRITE_PROJECT_ID || vars.VITE_APPWRITE_PROJECT_ID }}
+          VITE_APPWRITE_MOVIE_DATABASE_ID: ${{ secrets.VITE_APPWRITE_MOVIE_DATABASE_ID || vars.VITE_APPWRITE_MOVIE_DATABASE_ID }}
+          VITE_APPWRITE_MOVIE_DATABASE_SCHEMA_ID: ${{ secrets.VITE_APPWRITE_MOVIE_DATABASE_SCHEMA_ID || vars.VITE_APPWRITE_MOVIE_DATABASE_SCHEMA_ID }}
+          VITE_APPWRITE_BASE_URL: ${{ secrets.VITE_APPWRITE_BASE_URL || vars.VITE_APPWRITE_BASE_URL }}
+          VITE_APPWRITE_STORAGE_BUCKET_ID: ${{ secrets.VITE_APPWRITE_STORAGE_BUCKET_ID || vars.VITE_APPWRITE_STORAGE_BUCKET_ID }}
+          VITE_APPWRITE_USER_PROFILE_PICTURE_RESOURCE_ID: ${{ secrets.VITE_APPWRITE_USER_PROFILE_PICTURE_RESOURCE_ID || vars.VITE_APPWRITE_USER_PROFILE_PICTURE_RESOURCE_ID }}
 
       # GitHub Pages serves 404.html for unknown paths, so serving the app there
       # lets React Router handle deep links like /Neoflix/details/123 on refresh
