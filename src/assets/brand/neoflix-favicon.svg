@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Simplified Neoflix icon for 16–48px: fewer, larger sprocket holes stay readable when small -->
+  <defs>
+    <linearGradient id="red" x1="112" y1="96" x2="400" y2="416" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f05252"/>
+      <stop offset="1" stop-color="#c81e1e"/>
+    </linearGradient>
+    <mask id="sprockets">
+      <rect width="512" height="512" fill="#fff"/>
+      <g fill="#000">
+        <rect x="140" y="124" width="32" height="44" rx="8"/>
+        <rect x="140" y="234" width="32" height="44" rx="8"/>
+        <rect x="140" y="344" width="32" height="44" rx="8"/>
+        <rect x="340" y="124" width="32" height="44" rx="8"/>
+        <rect x="340" y="234" width="32" height="44" rx="8"/>
+        <rect x="340" y="344" width="32" height="44" rx="8"/>
+      </g>
+    </mask>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#111"/>
+  <g fill="url(#red)" mask="url(#sprockets)">
+    <rect x="112" y="96" width="88" height="320"/>
+    <rect x="312" y="96" width="88" height="320"/>
+    <polygon points="112,96 200,96 400,416 312,416"/>
+  </g>
+</svg>

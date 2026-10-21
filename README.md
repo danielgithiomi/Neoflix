@@ -1,4 +1,11 @@
-# [<img src="src/assets/images/app_logo.png" height="40" style="margin:0 5px" alt="Neoflix Logo"/>](https://github.com/githiomi/Neoflix) NEOFLIX
+<h1>
+  <a href="https://github.com/githiomi/Neoflix">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="src/assets/brand/neoflix-logo.svg">
+      <img src="src/assets/brand/neoflix-logo-dark.svg" height="48" alt="Neoflix">
+    </picture>
+  </a>
+</h1>
 <a id="readme-top"></a>
 
 > Developed by <a href="https://github.com/githiomi">Daniel Githiomi</a>

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Neoflix">
+  <title>Neoflix</title>
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1e1e1e"/>
+      <stop offset="1" stop-color="#0a0a0a"/>
+    </linearGradient>
+    <linearGradient id="red" x1="128" y1="112" x2="384" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f05252"/>
+      <stop offset="0.55" stop-color="#dc2626"/>
+      <stop offset="1" stop-color="#a51d1d"/>
+    </linearGradient>
+    <!-- Film-strip sprocket holes punched through the N -->
+    <mask id="sprockets">
+      <rect width="512" height="512" fill="#fff"/>
+      <g fill="#000">
+        <rect x="140" y="126" width="16" height="22" rx="4"/>
+        <rect x="140" y="173.6" width="16" height="22" rx="4"/>
+        <rect x="140" y="221.2" width="16" height="22" rx="4"/>
+        <rect x="140" y="268.8" width="16" height="22" rx="4"/>
+        <rect x="140" y="316.4" width="16" height="22" rx="4"/>
+        <rect x="140" y="364" width="16" height="22" rx="4"/>
+        <rect x="180" y="126" width="16" height="22" rx="4"/>
+        <rect x="180" y="173.6" width="16" height="22" rx="4"/>
+        <rect x="180" y="221.2" width="16" height="22" rx="4"/>
+        <rect x="180" y="268.8" width="16" height="22" rx="4"/>
+        <rect x="180" y="316.4" width="16" height="22" rx="4"/>
+        <rect x="180" y="364" width="16" height="22" rx="4"/>
+        <rect x="316" y="126" width="16" height="22" rx="4"/>
+        <rect x="316" y="173.6" width="16" height="22" rx="4"/>
+        <rect x="316" y="221.2" width="16" height="22" rx="4"/>
+        <rect x="316" y="268.8" width="16" height="22" rx="4"/>
+        <rect x="316" y="316.4" width="16" height="22" rx="4"/>
+        <rect x="316" y="364" width="16" height="22" rx="4"/>
+        <rect x="356" y="126" width="16" height="22" rx="4"/>
+        <rect x="356" y="173.6" width="16" height="22" rx="4"/>
+        <rect x="356" y="221.2" width="16" height="22" rx="4"/>
+        <rect x="356" y="268.8" width="16" height="22" rx="4"/>
+        <rect x="356" y="316.4" width="16" height="22" rx="4"/>
+        <rect x="356" y="364" width="16" height="22" rx="4"/>
+      </g>
+    </mask>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#tile)"/>
+  <rect x="1.5" y="1.5" width="509" height="509" rx="110.5" fill="none" stroke="#fff" stroke-opacity="0.06" stroke-width="3"/>
+  <g fill="url(#red)" mask="url(#sprockets)">
+    <rect x="128" y="112" width="80" height="288"/>
+    <rect x="304" y="112" width="80" height="288"/>
+    <polygon points="128,112 208,112 384,400 304,400"/>
+  </g>
+</svg>

@@ -1,6 +1,6 @@
 import '../App.css';
 import { CSSProperties } from 'react';
-import appLogo from '../assets/images/app_logo.png';
+import neoflixLogo from '../assets/brand/neoflix-logo.svg';
 import { NavLink, NavLinkRenderProps } from "react-router-dom";
 import { FaArrowCircleDown, FaBell, FaSearch } from "react-icons/fa";
 
@@ -26,8 +26,7 @@ const Header = ({ userProfilePictureUrl }: HomeProps) => {
 
             <NavLink to={"/"}>
                 <div className="flex items-center logo brand">
-                    <img src={appLogo} alt="App Logo" className="logo" />
-                    <h3 className="font-extrabold text-red-600 text-4xl uppercase tracking-wide brand-text">Neoflix</h3>
+                    <img src={neoflixLogo} alt="Neoflix" className="h-10 w-auto" />
                 </div>
             </NavLink>
 
