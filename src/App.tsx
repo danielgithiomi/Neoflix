@@ -1,4 +1,3 @@
-import './App.css'
 import User from './data/User.ts';
 import Home from "./pages/Home.tsx";
 import { SEX } from './data/Sex.ts';

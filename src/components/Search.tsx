@@ -1,6 +1,6 @@
 import * as React from "react";
-import { FaSearch } from "react-icons/fa";
-import { Dispatch, SetStateAction } from "react";
+import { FaSearch, FaTimes } from "react-icons/fa";
+import { Dispatch, SetStateAction, useRef } from "react";
 
 type TSearchProps = {
     searchTerm: string;
@@ -8,26 +8,46 @@ type TSearchProps = {
 };
 
 const Search = ({ searchTerm, setSearchTerm }: TSearchProps) => {
+    const inputRef = useRef<HTMLInputElement>(null);
+
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
+    };
+
+    // Results already update as you type, so submitting just closes the mobile keyboard
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const value = event.target.value;
-        setSearchTerm(value);
+        inputRef.current?.blur();
+    };
+
+    const clearSearch = () => {
+        setSearchTerm("");
+        inputRef.current?.focus();
     };
 
     return (
-        <>
-            <div className="flex flex-row items-center gap-5 mx-auto mb-8 p-3 border-2 border-red-600 rounded-2xl w-[80%] sm:w-[70%] md:w-[50%] lg:w-[30%]">
-                <FaSearch size={20} className="text-red-600" />
-                <input
-                    type="text"
-                    className="overflow-hidden search-input grow"
-                    id="movie-search"
-                    value={searchTerm}
-                    onChange={handleSearch}
-                    placeholder="Search for any movie..."
-                />
-            </div>
-        </>
+        <form role="search" className="search-pill" onSubmit={handleSubmit}>
+            <label htmlFor="movie-search" className="sr-only">
+                Search movies
+            </label>
+            <input
+                ref={inputRef}
+                type="search"
+                id="movie-search"
+                value={searchTerm}
+                onChange={handleSearch}
+                placeholder="Search for any movie…"
+                autoComplete="off"
+            />
+            {searchTerm && (
+                <button type="button" className="search-clear" aria-label="Clear search" onClick={clearSearch}>
+                    <FaTimes size={14} />
+                </button>
+            )}
+            <button type="submit" className="search-button" aria-label="Search">
+                <FaSearch size={16} />
+            </button>
+        </form>
     );
 };
 

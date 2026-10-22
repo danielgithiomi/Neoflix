@@ -36,10 +36,12 @@ export const convertMovieSpecToMovie = (movie: MovieSpecs): Movie => {
 
 export const fetchMovies = async (
     searchQuery: string = "",
+    genreId: number | null = null,
 ): Promise<Movie[]> => {
+    const genreFilter: string = genreId ? `&with_genres=${genreId}` : "";
     const endpoint: string = searchQuery
-        ? `${API_BASE_URL}/search/movie?query=${encodeURI(searchQuery)}}`
-        : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
+        ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(searchQuery)}`
+        : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc${genreFilter}`;
 
     const result = await axios.get(endpoint, API_OPTIONS);
 
@@ -55,7 +57,10 @@ export const fetchMovies = async (
         updateTrendingMoviesCount(searchQuery, movies[0]);
     }
 
-    return movies;
+    // TMDB's search endpoint can't filter by genre, so narrow its results here
+    return searchQuery && genreId
+        ? movies.filter((movie) => movie.genre_ids.includes(genreId))
+        : movies;
 };
 
 export const fetchMovieById = async (movieId: string): Promise<MovieSpecs> => {

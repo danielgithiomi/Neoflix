@@ -2,8 +2,8 @@ import { useState } from "react";
 import Movie from "../data/Movie.ts";
 import { useDebounce } from "react-use";
 import Error from "../components/Error.tsx";
+import { GENRES } from "../data/Genres.ts";
 import Banner from "../components/Banner.tsx";
-import Search from "../components/Search.tsx";
 import { useQuery } from "@tanstack/react-query";
 import Trending from "../components/Trending.tsx";
 import MovieCard from "../components/MovieCard.tsx";
@@ -13,6 +13,10 @@ const Home = () => {
     // State Managers
     const [search, setSearch] = useState<string>("");
     const [searchDebounce, setSearchDebounce] = useState("");
+    const [selectedGenre, setSelectedGenre] = useState<number | null>(null);
+    const selectedGenreName = GENRES.find(
+        (genre) => genre.id === selectedGenre,
+    )?.name;
     const titleClassname =
         "text-white uppercase text-3xl font-bold my-4 text-center";
 
@@ -25,19 +29,18 @@ const Home = () => {
         isError: isMoviesError,
         error: movieFetchError,
     } = useQuery({
-        queryKey: ["Movies", searchDebounce],
-        queryFn: () => fetchMovies(searchDebounce),
+        queryKey: ["Movies", searchDebounce, selectedGenre],
+        queryFn: () => fetchMovies(searchDebounce, selectedGenre),
     });
 
     return (
         <>
-            <div className="pattern" />
-
-            <Banner />
-
-            {!isMoviesError && (
-                <Search searchTerm={search} setSearchTerm={setSearch} />
-            )}
+            <Banner
+                searchTerm={search}
+                setSearchTerm={setSearch}
+                selectedGenre={selectedGenre}
+                setSelectedGenre={setSelectedGenre}
+            />
 
             {!isMoviesError && <Trending />}
 
@@ -61,7 +64,10 @@ const Home = () => {
                     {!search ? (
                         <p className={titleClassname}>
                             Explore{" "}
-                            <span className="text-gradient">Movies</span> Now!
+                            <span className="text-gradient">
+                                {selectedGenreName ?? "Movies"}
+                            </span>{" "}
+                            Now!
                         </p>
                     ) : (
                         <p className={titleClassname}>

@@ -1,4 +1,3 @@
-import '../App.css';
 import image_fallback from '../assets/images/no-movie.png';
 
 interface ImageProps {

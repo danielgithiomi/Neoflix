@@ -1,10 +1,8 @@
-import "../index.css";
 import React from "react";
 import Image from "./Image";
 import Movie from "../data/Movie";
-import { FaLink } from "react-icons/fa6";
 import { NavLink } from "react-router-dom";
-import { FaHeart, FaStar } from "react-icons/fa";
+import { FaHeart, FaStar, FaLink } from "react-icons/fa";
 import { useMovieContext } from "../contexts/FavouriteContext";
 
 type MovieCardProps = {
@@ -50,8 +48,8 @@ const MovieCard = (props: MovieCardProps) => {
                 </div>
 
                 <NavLink to={`/details/${id}`}>
-                    <div className="info">
-                        <FaLink className="info-icon" size={80} />
+                    <div className="details-link">
+                        <FaLink className="details-link-icon" size={50} />
                     </div>
                 </NavLink>
 

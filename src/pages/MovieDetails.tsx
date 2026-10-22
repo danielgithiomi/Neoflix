@@ -1,4 +1,3 @@
-import '../index.css';
 import Movie from "@/data/Movie.ts";
 import {useParams} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
@@ -31,10 +30,10 @@ const MovieDetails = () => {
     }
 
     if (isLoading)
-        return <div className="min-h-[70vh] flex items-center justify-center text-center">Loading movie details...</div>
+        return <div className="flex justify-center items-center min-h-[70vh] text-center">Loading movie details...</div>
 
     if (isError)
-        return <div className="min-h-[70vh] flex items-center justify-center text-center text-red-600 underline font-bold">Error fetching movie data</div>
+        return <div className="flex justify-center items-center min-h-[70vh] font-bold text-red-600 text-center underline">Error fetching movie data</div>
 
     const favouriteStatus = isFavourite(parseInt(movie_id!))
     const image_src: string = movie?.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : image_fallback;
@@ -42,17 +41,17 @@ const MovieDetails = () => {
     const genre_length: number = (movie!.genres.length - 1);
 
     return (
-        <section className="min-h-[88vh] flex flex-row items-center justify-center gap-8 p-8">
+        <section className="flex flex-row justify-center items-center gap-8 p-8 min-h-[88vh]">
 
-            <div className="movie-poster flex-1 rounded-3xl border-2 border-red-600 overflow-hidden">
+            <div className="flex-1 border-2 border-red-600 rounded-3xl overflow-hidden movie-poster">
                 <img src={image_src} alt={`${movie?.title} Poster`}/>
             </div>
 
-            <div className="movie-details flex-2">
-                <p className="text-4xl font-bold tracking-wider">{movie?.title}</p>
+            <div className="flex-2 movie-details">
+                <p className="font-bold text-4xl tracking-wider">{movie?.title}</p>
 
-                <div className="movie-rating flex flex-row items-center justify-start gap-4">
-                    <div className="star-rating flex flex-row gap-0.5">
+                <div className="flex flex-row justify-start items-center gap-4 movie-rating">
+                    <div className="flex flex-row gap-0.5 star-rating">
                         {
                             Array.from({length: 5}, (_, index) => index + 1).map(i => (
                                 <FaStar key={i} size={20}
@@ -63,51 +62,53 @@ const MovieDetails = () => {
 
                     <span className="text-amber-400">•</span>
 
-                    <p className="bg-gray-700 text-white rounded text-sm px-2 py-1">{movie?.vote_average.toFixed(1)}</p>
+                    <p className="bg-gray-700 px-2 py-1 rounded text-white text-sm">{movie?.vote_average.toFixed(1)}</p>
 
                     <span className="text-amber-400">•</span>
 
-                    <p className="text-gray-500 font-bold">{movie?.vote_count} total ratings</p>
+                    <p className="font-bold text-gray-500">{movie?.vote_count} total ratings</p>
                 </div>
 
-                <div className="movie-genres mt-2 mb-4 text-sm">
+                <div className="mt-2 mb-4 text-sm movie-genres">
                     {
                         movie?.genres.map((genre, index) =>
                             <span
-                                className="text-gray-500 italic uppercase font-bold">
+                                key={index}
+                                className="font-bold text-gray-500 italic uppercase">
                                 {genre.name}{index < genre_length ? ',' : ''}
                             </span>)
                     }
                 </div>
 
-                <div className="languages text-pretty">
+                <div className="text-pretty languages">
                     Spoken Languages:
                     <span className="mx-2">
                     {
                         movie?.spoken_languages.map((language, index) =>
-                            <span key={index}
-                                  className="text-gray-500 font-bold uppercase text-sm">
+                            <span 
+                                key={index}
+                                className="font-bold text-gray-500 text-sm uppercase">
                                     {language.name}{index < movie?.spoken_languages.length - 1 ? ', ' : ''}
                             </span>)
                     }
                     </span>
                 </div>
 
-                <div className="movie-description max-w-[90%] my-4 py-4 text-justify">
+                <div className="my-4 py-4 max-w-[90%] text-justify movie-description">
                     <p className="text-lg">
                         {movie?.overview}
                     </p>
                 </div>
 
                 <div className="extra-details">
-                    <p className="text-gray-500 font-bold">Release Date: <span
-                        className="text-gray-700 mx-1">{movie?.release_date}</span></p>
+                    <p className="font-bold text-gray-500">Release Date: <span
+                        className="mx-1 text-gray-700">{movie?.release_date}</span></p>
 
-                    <p className="text-gray-500 font-bold">Runtime: <span
-                        className="text-gray-700 mx-1">{movie?.runtime} minutes</span></p>
+                    <p className="font-bold text-gray-500">Runtime: <span
+                        className="mx-1 text-gray-700">{movie?.runtime} minutes</span></p>
 
-                    <p className="text-gray-500 font-bold">Revenue: <span
-                        className="text-gray-700 mx-1">{new Intl.NumberFormat('en-US', {
+                    <p className="font-bold text-gray-500">Revenue: <span
+                        className="mx-1 text-gray-700">{new Intl.NumberFormat('en-US', {
                         style: 'currency',
                         currency: 'USD'
                     }).format(movie!.revenue)}</span></p>

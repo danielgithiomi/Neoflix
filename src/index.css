@@ -1,49 +1,50 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
 
 @import "tailwindcss";
 
-:root {
-    font-family: "DM Sans", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-    line-height: 1.5;
-    font-weight: 400;
-
-    color-scheme: light dark;
-    color: rgba(255, 255, 255, 0.87);
-    background-color: #070707;
-    --custom-animation-duration: .5s;
-
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    min-width: 320px;
-    min-height: 100vh;
-    overflow-x: hidden;
-    overflow-y: auto;
-    scrollbar-gutter: stable;
-}
-
-h1 {
-    font-size: 3.2em;
-    line-height: 1.1;
-}
-
-button:focus,
-button:focus-visible {
-    outline: 4px auto -webkit-focus-ring-color;
-}
+/*
+ * Keep every rule inside a layer (base, components, or @utility).
+ * Unlayered CSS beats all of Tailwind, including the utility classes in your JSX.
+ */
 
 @layer base {
+    :root {
+        font-family:
+            "DM Sans", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+        line-height: 1.5;
+        font-weight: 400;
+
+        color-scheme: dark;
+        color: rgba(255, 255, 255, 0.87);
+        background-color: #070707;
+        --custom-animation-duration: 0.5s;
+
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
     body {
+        margin: 0;
+        padding: 0;
+        min-width: 320px;
+        min-height: 100vh;
+        overflow-x: hidden;
+        overflow-y: auto;
+        scrollbar-gutter: stable;
         font-family: "DM Sans", serif;
         font-optical-sizing: auto;
         background: #101010;
+    }
+
+    #root {
+        @apply mx-auto px-4 md:px-12 max-w-[1480px];
+    }
+
+    button:focus-visible {
+        outline: 4px auto -webkit-focus-ring-color;
     }
 
     h1 {
@@ -57,29 +58,75 @@ button:focus-visible {
     main {
         @apply relative bg-[#101010] min-h-screen;
     }
-
-    header {
-        @apply mt-5 sm:mt-10;
-    }
-
-    header img {
-        @apply drop-shadow-md mx-auto w-full max-w-lg h-auto object-contain;
-    }
 }
 
 @layer components {
-    /*.pattern {*/
-    /*    @apply z-0 absolute bg-hero-pattern bg-cover bg-center w-screen h-screen;*/
-    /*}*/
-    .pattern {
-        @apply z-0 absolute bg-cover bg-center h-screen;
+    /* Header */
+    .logo {
+        @apply transition-[filter] duration-300 cursor-pointer;
+        will-change: filter;
+
+        &:hover {
+            filter: drop-shadow(0 0 2em rgba(255, 0, 0, 0.5));
+        }
     }
 
-    /*.wrapper {*/
-    /*    @apply z-10 relative flex flex-col mx-auto xs:p-10 px-5 py-12 max-w-7xl;*/
-    /*}*/
-    .wrapper {
-        @apply z-10 relative flex flex-col mx-auto px-5 py-12 max-w-7xl;
+    .link {
+        @apply px-4;
+    }
+
+    .link,
+    .icon {
+        @apply transition-colors duration-300 cursor-pointer;
+    }
+
+    /* Full-bleed hero: breaks out of #root's max-width and padding */
+    .hero {
+        @apply relative left-1/2 flex justify-center items-center -ml-[50vw] py-20 w-screen min-h-[560px] md:min-h-[680px] overflow-hidden;
+
+        & .poster-wall {
+            @apply top-1/2 left-1/2 absolute opacity-60 -translate-x-1/2 -translate-y-1/2 -rotate-12 pointer-events-none;
+        }
+
+        & .poster-wall-grid {
+            @apply gap-3 md:gap-4 grid grid-cols-[repeat(14,90px)] md:grid-cols-[repeat(14,150px)] motion-safe:animate-poster-drift;
+        }
+
+        & .poster-wall-tile {
+            @apply bg-neutral-800 rounded-lg w-full aspect-[2/3] object-cover;
+        }
+
+        /* Darkens the centre for legible text and fades the wall into the page at the top and bottom */
+        & .hero-shade {
+            @apply absolute inset-0;
+            background:
+                linear-gradient(
+                    to bottom,
+                    #101010 0%,
+                    transparent 18%,
+                    transparent 72%,
+                    #101010 100%
+                ),
+                radial-gradient(
+                    ellipse at center,
+                    rgba(16, 16, 16, 0.85) 0%,
+                    rgba(16, 16, 16, 0.55) 50%,
+                    rgba(16, 16, 16, 0.15) 100%
+                );
+        }
+
+        & .hero-content {
+            @apply z-10 relative flex flex-col items-center px-5 w-full max-w-2xl text-center;
+        }
+
+        & .hero-title {
+            font-family: "Bebas Neue", sans-serif;
+            @apply max-w-none font-normal text-white text-7xl sm:text-8xl md:text-9xl leading-[0.9] tracking-wide;
+        }
+
+        & .hero-tagline {
+            @apply mt-4 mb-8 text-gray-300 md:text-lg;
+        }
     }
 
     .trending {
@@ -106,19 +153,36 @@ button:focus-visible {
         }
     }
 
-    .search {
-        @apply mx-auto mt-10 px-4 py-3 rounded-lg w-full max-w-3xl;
-
-        & div {
-            @apply relative flex items-center;
-        }
-
-        & img {
-            @apply left-2 absolute w-5 h-5;
-        }
+    .search-pill {
+        @apply flex items-center gap-1 bg-white/10 backdrop-blur-md py-1.5 pr-1.5 pl-5 border border-white/20 focus-within:border-red-600 rounded-full w-full max-w-xl transition-colors;
 
         & input {
-            @apply bg-transparent py-2 sm:pr-10 pl-10 outline-hidden w-full text-gray-200 text-base;
+            @apply bg-transparent py-2 outline-hidden min-w-0 text-white placeholder:text-gray-400 text-base grow;
+
+            &::-webkit-search-cancel-button {
+                appearance: none;
+            }
+        }
+
+        & .search-clear {
+            @apply p-2 text-gray-400 hover:text-white cursor-pointer;
+        }
+
+        & .search-button {
+            @apply place-items-center grid bg-red-600 hover:bg-red-700 rounded-full w-11 h-11 text-white cursor-pointer shrink-0;
+        }
+    }
+
+    /* Scrolls sideways on phones, wraps and centres on wider screens */
+    .genre-chips {
+        @apply flex md:flex-wrap md:justify-center gap-2 mt-5 w-full max-w-xl overflow-x-auto hide-scrollbar;
+
+        & .genre-chip {
+            @apply bg-black/30 hover:border-white/50 px-4 py-1.5 border border-white/20 rounded-full text-gray-200 text-sm whitespace-nowrap transition-colors cursor-pointer;
+
+            &[aria-pressed="true"] {
+                @apply bg-red-600 border-red-600 text-white;
+            }
         }
     }
 
@@ -144,25 +208,24 @@ button:focus-visible {
                 @apply block top-4 right-4 z-10 absolute cursor-pointer;
             }
 
-            & .play {
-                animation: reveal .5s;
+            & .details-link {
+                animation: reveal 0.5s;
                 @apply z-10 flex;
             }
 
             & img {
                 @apply z-5 scale-105 duration-400 ease-in-out;
             }
-
         }
 
         & .favourite {
             @apply hidden bg-black p-2 border-2 border-white rounded-full;
         }
 
-        & .info {
+        & .details-link {
             @apply hidden top-0 left-0 absolute justify-center items-center w-full h-full cursor-pointer;
 
-            & .info-icon {
+            & .details-link-icon {
                 @apply bg-red-700 p-3 border-2 border-white rounded-full text-white;
             }
         }
@@ -210,7 +273,8 @@ button:focus-visible {
 
     /* Profile Component */
     .profile-picture {
-        @apply bg-black border-4 border-red-600 rounded-full w-fit overflow-hidden cursor-pointer;
+        @apply bg-black border-4 border-red-600 rounded-full w-fit h-60 overflow-hidden transition-[filter] duration-300 cursor-pointer;
+        will-change: filter;
 
         & img {
             @apply rounded-full w-full h-full object-cover;
@@ -251,6 +315,20 @@ button:focus-visible {
     font-family: "Bebas Neue", sans-serif;
 }
 
+@theme {
+    --animate-poster-drift: poster-drift 40s ease-in-out infinite alternate;
+
+    @keyframes poster-drift {
+        from {
+            transform: translateY(0);
+        }
+
+        to {
+            transform: translateY(-160px);
+        }
+    }
+}
+
 @utility hide-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -271,20 +349,5 @@ button:focus-visible {
             opacity: 1;
             transform: translateY(0);
         }
-    }
-}
-
-@media (prefers-color-scheme: light) {
-    :root {
-        color: #213547;
-        background-color: #ffffff;
-    }
-
-    a:hover {
-        color: #747bff;
-    }
-
-    button {
-        background-color: #f9f9f9;
     }
 }

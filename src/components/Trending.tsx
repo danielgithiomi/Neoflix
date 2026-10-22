@@ -1,4 +1,3 @@
-import '../index.css';
 import { useQuery } from '@tanstack/react-query';
 import { getTrendingMovies } from '../services/MovieService';
 
