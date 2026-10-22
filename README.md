@@ -36,6 +36,7 @@ It incorporates many of the React functionalities such as routing, context provi
 Below is a glimpse of the React Application. Click on the link to visit the website and ___Neoflix and Chill!___
 
 ![Application Preview](/src/assets/images/screenshot.png)
+![Application Preview](/src/assets/images/screenshot_2.png)
 
 
 ## ⚙️ TECH-STACK
