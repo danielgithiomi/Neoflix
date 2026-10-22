@@ -21,7 +21,7 @@ const Header = ({ userProfilePictureUrl }: HomeProps) => {
 
     return (
         // On phones the nav drops to its own row under the logo and profile
-        <div className="flex flex-row flex-wrap md:flex-nowrap justify-between items-center gap-y-2 py-3 md:py-6">
+        <div className="z-20 relative flex flex-row flex-wrap md:flex-nowrap justify-between items-center gap-y-2 py-3 md:py-6">
 
             <NavLink to={"/"} aria-label="Neoflix home">
                 <div className="flex items-center md:px-6 logo brand">
