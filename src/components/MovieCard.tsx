@@ -84,9 +84,9 @@ const MovieCard = (props: MovieCardProps) => {
                     <div className="flex flex-col items-start gap-4 movie-content">
                         <div className="flex flex-row items-center gap-4 movie-rating">
                             <FaStar className="text-amber-400" size={iconSize} />
-                            <p className="font-bold text-white">
+                            <div className="font-bold text-white">
                                 {renderRating()}
-                            </p>
+                            </div>
                         </div>
 
                         <div className="flex flex-row items-center gap-4 movie-release">

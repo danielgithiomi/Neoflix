@@ -1,43 +1,47 @@
-import { useQuery } from '@tanstack/react-query';
-import { getTrendingMovies } from '../services/MovieService';
+import { NavLink } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getTrendingMovies } from "../services/MovieService";
 
 const Trending = () => {
-
-    // State to store the trending movies
     const {
-        data: trending_movies,
         isError,
-        isFetching
+        isFetching,
+        data: trending_movies,
     } = useQuery({
-        queryKey: ['trending_movies'],
-        queryFn: () => getTrendingMovies()
+        queryKey: ["trending_movies"],
+        queryFn: () => getTrendingMovies(),
     });
 
     if (isError)
-        return <p className="text-center text-red-600 text-2xl uppercase">Failed to fetch trending movies!</p>
-
+        return (
+            <p className="text-red-600 text-2xl text-center uppercase">
+                Failed to fetch trending movies!
+            </p>
+        );
 
     if (isFetching)
-        return <p className="text-center text-gray-400 text-xl">Loading...</p>
+        return <p className="text-gray-400 text-xl text-center">Loading...</p>;
 
     return (
-        <section className='trending'>
-
-            <h2 className="text-white uppercase text-3xl font-bold my-4 text-center">Top <span className="text-gradient">Trending</span> Movies!</h2>
+        <section className="trending">
+            <h2 className="my-4 font-bold text-white text-3xl text-center uppercase">
+                Top <span className="text-gradient">Trending</span> Movies!
+            </h2>
 
             <ul>
-                {
-                    trending_movies?.map(
-                        (movie, index) =>
-                            <li key={movie.$id}>
-                                <p>{index + 1}</p>
-                                <img src={movie.poster_image_url} alt={movie.search_term} />
-                            </li>
-                    )
-                }
+                {trending_movies?.map((movie, index) => (
+                    <li key={movie.$id}>
+                        <p>{index + 1}</p>
+                        <NavLink to={`/details/${movie.movie_id}`}>
+                            <img
+                                alt={movie.search_term}
+                                src={movie.poster_image_url}
+                            />
+                        </NavLink>
+                    </li>
+                ))}
             </ul>
-
         </section>
-    )
-}
-export default Trending
+    );
+};
+export default Trending;
