@@ -10,6 +10,9 @@ type MovieCardProps = {
 };
 
 const MovieCard = (props: MovieCardProps) => {
+
+    const iconSize: number = 15;
+
     const movie = props.movie;
     const {
         id,
@@ -34,6 +37,19 @@ const MovieCard = (props: MovieCardProps) => {
         }
     };
 
+    const renderRating = () => {
+        if (vote_average) {
+            return (
+                <p className="font-bold text-white">
+                    {vote_average.toFixed(2)}{" "}
+                    <span className="text-gray-600 text-xs">/ 10</span>
+                </p>
+            );
+        } else {
+            return <p className="font-bold text-white">No Rating Available</p>;
+        }
+    };
+
     return (
         <div className="movie-card">
             <div className="overlay">
@@ -43,13 +59,15 @@ const MovieCard = (props: MovieCardProps) => {
                 >
                     <FaHeart
                         className={favourite ? "text-red-500" : "text-white"}
-                        size={20}
+                        size={iconSize}
                     />
                 </div>
 
                 <NavLink to={`/details/${id}`}>
                     <div className="details-link">
-                        <FaLink className="details-link-icon" size={50} />
+                        <span className="details-link-icon">
+                            <FaLink size={iconSize + 5} />
+                        </span>
                     </div>
                 </NavLink>
 
@@ -65,11 +83,9 @@ const MovieCard = (props: MovieCardProps) => {
 
                     <div className="flex flex-col items-start gap-4 movie-content">
                         <div className="flex flex-row items-center gap-4 movie-rating">
-                            <FaStar className="text-amber-400" size={20} />
+                            <FaStar className="text-amber-400" size={iconSize} />
                             <p className="font-bold text-white">
-                                {vote_average
-                                    ? vote_average.toFixed(2)
-                                    : "No Rating Available"}
+                                {renderRating()}
                             </p>
                         </div>
 
