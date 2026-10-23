@@ -80,21 +80,22 @@
         @apply transition-colors duration-300 cursor-pointer;
     }
 
+    /* Poster Wall (home hero and auth pages). Its parent needs position: relative and overflow: hidden */
+    .poster-wall {
+        @apply top-1/2 left-1/2 absolute opacity-60 -translate-x-1/2 -translate-y-1/2 -rotate-12 pointer-events-none;
+    }
+
+    .poster-wall-grid {
+        @apply gap-3 md:gap-4 grid grid-cols-[repeat(14,90px)] md:grid-cols-[repeat(14,150px)] motion-safe:animate-poster-drift;
+    }
+
+    .poster-wall-tile {
+        @apply bg-neutral-800 rounded-lg w-full aspect-[2/3] object-cover;
+    }
+
     /* Full-bleed hero: breaks out of #root's max-width and padding */
     .hero {
         @apply relative left-1/2 flex justify-center items-center -ml-[50vw] py-20 w-screen min-h-[560px] md:min-h-[680px] overflow-hidden;
-
-        & .poster-wall {
-            @apply top-1/2 left-1/2 absolute opacity-60 -translate-x-1/2 -translate-y-1/2 -rotate-12 pointer-events-none;
-        }
-
-        & .poster-wall-grid {
-            @apply gap-3 md:gap-4 grid grid-cols-[repeat(14,90px)] md:grid-cols-[repeat(14,150px)] motion-safe:animate-poster-drift;
-        }
-
-        & .poster-wall-tile {
-            @apply bg-neutral-800 rounded-lg w-full aspect-[2/3] object-cover;
-        }
 
         /* Darkens the centre for legible text and fades the wall into the page at the top and bottom */
         & .hero-shade {
@@ -127,6 +128,90 @@
         & .hero-tagline {
             @apply mt-4 mb-8 text-gray-300 md:text-lg;
         }
+    }
+
+    /* Auth Pages (login and sign up) */
+    .auth-page {
+        @apply relative left-1/2 flex flex-col justify-center items-center -ml-[50vw] px-4 py-10 w-screen min-h-screen overflow-hidden;
+
+        /* Pinned to the window so the wall stays behind the card when error messages make it scroll */
+        & .poster-wall {
+            @apply fixed;
+        }
+
+        & .auth-shade {
+            @apply fixed inset-0 bg-[#101010]/55;
+        }
+
+        & .auth-logo {
+            @apply z-10 relative mb-6 w-auto h-9 sm:h-11;
+        }
+    }
+
+    /* Frosted card that blurs the poster wall behind the form */
+    .auth-card {
+        @apply z-10 relative bg-[#121212]/75 shadow-2xl backdrop-blur-xl p-6 sm:p-8 border border-white/10 rounded-3xl w-full max-w-md;
+
+        & .auth-title {
+            @apply mx-0 font-bold text-white text-2xl text-left leading-tight;
+        }
+
+        & .auth-subtitle {
+            @apply mt-1 mb-6 text-gray-400 text-sm;
+        }
+
+        & .auth-footer {
+            @apply mt-6 text-gray-400 text-sm text-center;
+
+            & a {
+                @apply font-medium text-red-500 hover:text-red-400;
+            }
+        }
+    }
+
+    .auth-form {
+        @apply flex flex-col gap-3;
+    }
+
+    .auth-field {
+        @apply flex flex-col min-w-0;
+
+        & .auth-input-wrap {
+            @apply relative flex items-center;
+        }
+
+        & input {
+            @apply bg-[#1c1c1c]/80 px-4 py-3 border border-white/10 focus:border-red-600 rounded-xl outline-hidden w-full text-white placeholder:text-gray-500 transition-colors;
+
+            &[aria-invalid="true"] {
+                @apply border-red-500;
+            }
+        }
+
+        & .auth-toggle-password {
+            @apply right-3 absolute p-1 text-gray-400 hover:text-white cursor-pointer;
+        }
+
+        /* Leaves room for the show/hide button */
+        &:has(.auth-toggle-password) input {
+            @apply pr-11;
+        }
+
+        & .auth-field-error {
+            @apply mt-1 px-1 text-red-400 text-xs;
+        }
+    }
+
+    .auth-status {
+        @apply bg-white/5 px-4 py-3 border border-white/10 rounded-xl text-gray-200 text-sm;
+
+        &.auth-status-error {
+            @apply bg-red-950/40 border-red-800 text-red-200;
+        }
+    }
+
+    .auth-submit {
+        @apply bg-red-600 hover:bg-red-700 disabled:opacity-60 mt-2 py-3 rounded-xl w-full font-bold text-white transition-colors cursor-pointer disabled:cursor-not-allowed;
     }
 
     .trending {
