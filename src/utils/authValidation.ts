@@ -4,11 +4,11 @@ export interface LoginValues {
 }
 
 export interface SignUpValues {
-    firstName: string;
+    email: string;
     lastName: string;
     username: string;
-    email: string;
     password: string;
+    firstName: string;
     confirmPassword: string;
 }
 

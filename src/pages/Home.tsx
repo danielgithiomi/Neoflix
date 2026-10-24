@@ -25,9 +25,9 @@ const Home = () => {
 
     const {
         data: fetchedMovies,
-        isPending: isFetchingMovies,
         isError: isMoviesError,
         error: movieFetchError,
+        isPending: isFetchingMovies,
     } = useQuery({
         queryKey: ["Movies", searchDebounce, selectedGenre],
         queryFn: () => fetchMovies(searchDebounce, selectedGenre),

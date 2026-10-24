@@ -39,6 +39,7 @@ export const fetchMovies = async (
     genreId: number | null = null,
 ): Promise<Movie[]> => {
     const genreFilter: string = genreId ? `&with_genres=${genreId}` : "";
+    
     const endpoint: string = searchQuery
         ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(searchQuery)}`
         : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc${genreFilter}`;

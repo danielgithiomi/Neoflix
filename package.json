@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "start": "vite",
-    "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build": "tsc -b && vite build"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.6.0",
