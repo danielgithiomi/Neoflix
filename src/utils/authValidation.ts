@@ -15,9 +15,9 @@ export interface SignUpValues {
 export type FieldErrors<T> = Partial<Record<keyof T, string>>;
 
 // Appwrite accepts passwords of 8–256 characters and names of up to 128 characters
+const NAME_MAX_LENGTH: number = 128;
 const PASSWORD_MIN_LENGTH: number = 8;
 const PASSWORD_MAX_LENGTH: number = 256;
-const NAME_MAX_LENGTH: number = 128;
 
 const EMAIL_PATTERN: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const USERNAME_PATTERN: RegExp = /^[a-zA-Z0-9_]{3,20}$/;

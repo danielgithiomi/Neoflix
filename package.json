@@ -1,14 +1,14 @@
 {
-  "name": "neoflix",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "name": "neoflix",
+  "version": "0.0.0",
   "scripts": {
     "start": "vite",
     "lint": "eslint .",
+    "test": "vitest run",
     "preview": "vite preview",
-    "build": "tsc -b && vite build",
-    "test": "vitest run"
+    "build": "tsc -b && vite build"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.6.0",
@@ -41,8 +41,8 @@
     "vitest": "^3.2.7"
   },
   "allowScripts": {
-    "@swc/core@1.10.11": true,
     "esbuild@0.25.4": true,
-    "fsevents@2.3.3": true
+    "fsevents@2.3.3": true,
+    "@swc/core@1.10.11": true
   }
 }

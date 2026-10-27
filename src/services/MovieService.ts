@@ -17,20 +17,20 @@ const API_OPTIONS = {
 
 export const convertMovieSpecToMovie = (movie: MovieSpecs): Movie => {
     return {
-        adult: movie!.adult,
-        backdrop_path: movie!.backdrop_path,
-        genre_ids: movie!.genres.map((genre) => genre.id),
         id: movie!.id,
-        original_language: movie!.original_language,
-        original_title: movie!.original_title,
+        adult: movie!.adult,
+        title: movie!.title,
+        video: movie!.video,
         overview: movie!.overview,
+        vote_count: movie!.vote_count,
         popularity: movie!.popularity,
         poster_path: movie!.poster_path,
         release_date: movie!.release_date,
-        title: movie!.title,
-        video: movie!.video,
         vote_average: movie!.vote_average,
-        vote_count: movie!.vote_count,
+        backdrop_path: movie!.backdrop_path,
+        original_title: movie!.original_title,
+        original_language: movie!.original_language,
+        genre_ids: movie!.genres.map((genre) => genre.id),
     };
 };
 
@@ -39,7 +39,7 @@ export const fetchMovies = async (
     genreId: number | null = null,
 ): Promise<Movie[]> => {
     const genreFilter: string = genreId ? `&with_genres=${genreId}` : "";
-    
+
     const endpoint: string = searchQuery
         ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(searchQuery)}`
         : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc${genreFilter}`;
