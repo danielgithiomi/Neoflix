@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Movie from "../data/Movie.ts";
 import { useDebounce } from "react-use";
-import Error from "../components/Error.tsx";
 import { GENRES } from "../data/Genres.ts";
+import Error from "../components/Error.tsx";
 import Banner from "../components/Banner.tsx";
 import { useQuery } from "@tanstack/react-query";
 import Trending from "../components/Trending.tsx";
