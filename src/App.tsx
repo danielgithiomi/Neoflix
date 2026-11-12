@@ -1,15 +1,15 @@
 import User from './data/User.ts';
 import Home from "./pages/Home.tsx";
+import { SEX } from './data/Sex.ts';
 import Login from "./pages/Login.tsx";
 import SignUp from "./pages/SignUp.tsx";
-import { SEX } from './data/Sex.ts';
 import Profile from './pages/Profile.tsx';
 import Header from "./components/Header.tsx";
 import ErrorComponent from './pages/Error.tsx';
 import Favourites from "./pages/Favourites.tsx";
-import { Route, Routes, useLocation } from "react-router-dom";
 import { useQuery } from '@tanstack/react-query';
 import MovieDetails from "./pages/MovieDetails.tsx";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { FavouriteProvider } from "./contexts/FavouriteContext.tsx";
 import { getAppwriteUserProfilePictureUrl, userProfilePictureId } from './services/UserService.ts';
 
