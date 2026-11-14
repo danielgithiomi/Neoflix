@@ -7,6 +7,7 @@ import Banner from "../components/Banner.tsx";
 import { useQuery } from "@tanstack/react-query";
 import Trending from "../components/Trending.tsx";
 import MovieCard from "../components/MovieCard.tsx";
+import {LottieAnimation} from "../components/Lottie.tsx";
 import { fetchMovies } from "../services/MovieService.ts";
 
 const Home = () => {
@@ -32,6 +33,10 @@ const Home = () => {
         queryKey: ["Movies", searchDebounce, selectedGenre],
         queryFn: () => fetchMovies(searchDebounce, selectedGenre),
     });
+    
+    const generateAnimationPath = (animationName: string): string  => {
+        return `${import.meta.env.BASE_URL}/animations/${animationName}`;
+    }
 
     return (
         <>
@@ -85,9 +90,12 @@ const Home = () => {
             ) : (
                 !isMoviesError &&
                 !isFetchingMovies && (
-                    <p className="text-red-600 text-2xl text-center uppercase">
-                        No Movies Found!
-                    </p>
+                    <LottieAnimation
+                        animationPath={generateAnimationPath('no_film_found.json')}
+                    />
+                    // <p className="text-red-600 text-2xl text-center uppercase">
+                    //     No Movies Found!
+                    // </p>
                 )
             )}
         </>

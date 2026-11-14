@@ -13,6 +13,7 @@ export const LottieAnimation: React.FC<LottieAnimationProps> = ({
     loop = true,
     animationPath,
     autoplay = true,
+    ...remainingProps
 }) => {
     return (
         <DotLottieReact
@@ -20,6 +21,7 @@ export const LottieAnimation: React.FC<LottieAnimationProps> = ({
             loop={loop}
             autoplay={autoplay}
             src={animationPath}
+            {...remainingProps}
         />
     );
 };
