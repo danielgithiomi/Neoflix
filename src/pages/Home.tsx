@@ -7,8 +7,9 @@ import Banner from "../components/Banner.tsx";
 import {useQuery} from "@tanstack/react-query";
 import Trending from "../components/Trending.tsx";
 import MovieCard from "../components/MovieCard.tsx";
-import {LottieAnimation} from "../components/Lottie.tsx";
 import {fetchMovies} from "../services/MovieService.ts";
+import {LottieAnimation} from "../components/Lottie.tsx";
+import { generateLottieAnimationPath } from '@libs/utils';
 
 const Home = () => {
 	// State Managers
@@ -33,10 +34,6 @@ const Home = () => {
 		queryKey: ["Movies", searchDebounce, selectedGenre],
 		queryFn: () => fetchMovies(searchDebounce, selectedGenre)
 	});
-	
-	const generateAnimationPath = (animationName: string): string => {
-		return `${import.meta.env.BASE_URL}/animations/${animationName}`;
-	}
 	
 	return (
 		<>
@@ -92,9 +89,9 @@ const Home = () => {
 				!isFetchingMovies && (
 					<LottieAnimation
 						wrapperClassname="mb-12"
-						animationPath={generateAnimationPath('no_film_found.json')}
+						animationPath={generateLottieAnimationPath('no_film_found.json')!}
 						message={<p>No Movies Found that match: <span
-							className="font-bold underline underline-offset-4 uppercase! text-red-500">{searchDebounce}</span></p>}
+							className="font-bold underline underline-offset-4 uppercase! text-red-400">{searchDebounce}</span></p>}
 					/>
 				)
 			)}

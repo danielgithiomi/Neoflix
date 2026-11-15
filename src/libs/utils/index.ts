@@ -1,1 +1,1 @@
-export { cn } from './misc';
+export * from './misc';
