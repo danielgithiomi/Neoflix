@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react";
 import { NavLink } from "react-router-dom";
 import AuthField from "../components/AuthField.tsx";
 import AuthLayout from "../components/AuthLayout.tsx";
-import { FieldErrors, LoginValues, validateLogin } from "../utils/authValidation.ts";
+import { FieldErrors, LoginValues, validateLogin } from "@/libs/validators/authValidation.ts";
 
 const INITIAL_VALUES: LoginValues = {
     email: "",
