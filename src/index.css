@@ -199,7 +199,7 @@
 
         & .auth-toggle-password,
         & .auth-clear {
-            @apply right-3 absolute p-1 text-gray-400 hover:text-white cursor-pointer;
+            @apply right-3 absolute p-1 text-gray-400 hover:text-red-500 hover:scale-105 transition cursor-pointer;
         }
 
         /* Leaves room for the show/hide or clear button */
