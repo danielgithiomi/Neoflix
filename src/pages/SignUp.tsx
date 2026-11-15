@@ -1,8 +1,8 @@
-import { FormEvent, useState } from "react";
 import { NavLink } from "react-router-dom";
-import AuthField from "../components/AuthField.tsx";
-import AuthLayout from "../components/AuthLayout.tsx";
-import { FieldErrors, SignUpValues, validateSignUp } from "@/libs/validators/authValidation.ts";
+import { FormEvent, useState } from "react";
+import AuthField from "@components/AuthField.tsx";
+import AuthLayout from "@components/AuthLayout.tsx";
+import { FieldErrors, SignUpValues, validateSignUp } from "@libs/validators/authValidation.ts";
 
 const INITIAL_VALUES: SignUpValues = {
     firstName: "",

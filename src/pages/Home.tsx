@@ -91,11 +91,9 @@ const Home = () => {
                 !isMoviesError &&
                 !isFetchingMovies && (
                     <LottieAnimation
+                        message={`No Movies Found that match: ${searchDebounce}`}
                         animationPath={generateAnimationPath('no_film_found.json')}
                     />
-                    // <p className="text-red-600 text-2xl text-center uppercase">
-                    //     No Movies Found!
-                    // </p>
                 )
             )}
         </>
