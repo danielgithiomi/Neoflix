@@ -1,6 +1,15 @@
+import { USERNAME_PART_LENGTH } from "../utils/profile.ts";
+
 export interface LoginValues {
     email: string;
     password: string;
+}
+
+export interface ProfileValues {
+    email: string;
+    lastName: string;
+    password: string;
+    firstName: string;
 }
 
 export interface SignUpValues {
@@ -59,6 +68,31 @@ export const validateSignUp = (values: SignUpValues): FieldErrors<SignUpValues> 
 
     if (!values.confirmPassword) errors.confirmPassword = "Confirm your password";
     else if (values.confirmPassword !== values.password) errors.confirmPassword = "Passwords don't match";
+
+    return errors;
+};
+
+export const validateProfile = (values: ProfileValues): FieldErrors<ProfileValues> => {
+    const errors: FieldErrors<ProfileValues> = {};
+    const firstName: string = values.firstName.trim();
+    const lastName: string = values.lastName.trim();
+    const fullName: string = `${firstName} ${lastName}`;
+    // The username is built from the start of each name, so both need enough characters
+    const tooShortError: string = `Use at least ${USERNAME_PART_LENGTH} characters`;
+
+    if (!firstName) errors.firstName = "Enter your first name";
+    else if (firstName.length < USERNAME_PART_LENGTH) errors.firstName = tooShortError;
+
+    if (!lastName) errors.lastName = "Enter your last name";
+    else if (lastName.length < USERNAME_PART_LENGTH) errors.lastName = tooShortError;
+    else if (fullName.length > NAME_MAX_LENGTH) errors.lastName = `Your full name must be ${NAME_MAX_LENGTH} characters or fewer`;
+
+    const emailError = validateEmail(values.email);
+    if (emailError) errors.email = emailError;
+
+    // An empty password keeps the current one, so it's only checked when a new one is typed
+    if (values.password && values.password.length < PASSWORD_MIN_LENGTH) errors.password = `Use at least ${PASSWORD_MIN_LENGTH} characters`;
+    else if (values.password.length > PASSWORD_MAX_LENGTH) errors.password = `Use ${PASSWORD_MAX_LENGTH} characters or fewer`;
 
     return errors;
 };

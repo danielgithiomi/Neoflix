@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { LoginValues, SignUpValues, validateLogin, validateSignUp } from "./authValidation.ts";
+import { LoginValues, ProfileValues, SignUpValues, validateLogin, validateProfile, validateSignUp } from "./authValidation.ts";
 
 const validLogin: LoginValues = {
     email: "neo@matrix.io",
@@ -13,6 +13,13 @@ const validSignUp: SignUpValues = {
     password: "followthewhiterabbit",
     firstName: "Thomas",
     confirmPassword: "followthewhiterabbit",
+};
+
+const validProfile: ProfileValues = {
+    email: "neo@matrix.io",
+    lastName: "Anderson",
+    password: "",
+    firstName: "Thomas",
 };
 
 describe("validateLogin", () => {
@@ -106,5 +113,47 @@ describe("validateSignUp", () => {
 
         expect(errors.confirmPassword).toBe("Passwords don't match");
         expect(errors.password).toBeUndefined();
+    });
+});
+
+describe("validateProfile", () => {
+    it("returns no errors for valid values", () => {
+        expect(validateProfile(validProfile)).toEqual({});
+    });
+
+    it("requires both names and an email", () => {
+        expect(validateProfile({ ...validProfile, firstName: " ", lastName: "", email: "" })).toEqual({
+            email: "Enter your email",
+            lastName: "Enter your last name",
+            firstName: "Enter your first name",
+        });
+    });
+
+    it("rejects names too short to build a username from", () => {
+        const errors = validateProfile({ ...validProfile, firstName: "Jo", lastName: " Li " });
+
+        expect(errors.firstName).toBe("Use at least 3 characters");
+        expect(errors.lastName).toBe("Use at least 3 characters");
+    });
+
+    it("rejects a full name longer than 128 characters on the last name field", () => {
+        const errors = validateProfile({ ...validProfile, firstName: "a".repeat(64), lastName: "b".repeat(64) });
+
+        expect(errors.lastName).toBe("Your full name must be 128 characters or fewer");
+        expect(errors.firstName).toBeUndefined();
+    });
+
+    it("rejects an invalid email", () => {
+        expect(validateProfile({ ...validProfile, email: "neo@matrix" }).email).toBe("Enter a valid email address");
+    });
+
+    it("only checks the password when a new one is entered", () => {
+        const withPassword = (password: string) => validateProfile({ ...validProfile, password });
+
+        expect(withPassword("").password).toBeUndefined();
+        expect(withPassword("a".repeat(7)).password).toBe("Use at least 8 characters");
+        expect(withPassword("a".repeat(8)).password).toBeUndefined();
+        expect(withPassword("a".repeat(256)).password).toBeUndefined();
+        expect(withPassword("a".repeat(257)).password).toBe("Use 256 characters or fewer");
     });
 });
