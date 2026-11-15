@@ -1,13 +1,27 @@
 import { CSSProperties } from 'react';
+import { useAuth } from '@/contexts/AuthContext.tsx';
 import neoflixLogo from '../assets/brand/neoflix-logo.svg';
-import { NavLink, NavLinkRenderProps } from "react-router-dom";
-import { FaArrowCircleDown, FaBell, FaSearch } from "react-icons/fa";
+import { getAuthErrorMessage } from '@libs/utils/authErrors.ts';
+import { NavLink, NavLinkRenderProps, useNavigate } from "react-router-dom";
+import { FaArrowCircleDown, FaBell, FaSearch, FaSignOutAlt } from "react-icons/fa";
 
 interface HomeProps {
     userProfilePictureUrl: string;
 }
 
 const Header = ({ userProfilePictureUrl }: HomeProps) => {
+
+    const navigate = useNavigate();
+    const { status, logOut } = useAuth();
+
+    const handleLogOut = async () => {
+        try {
+            await logOut();
+            navigate("/login", { replace: true });
+        } catch (error: unknown) {
+            alert(getAuthErrorMessage(error));
+        }
+    };
 
     // Inactive links get no inline style, so their text-white / hover:text-red-500 classes apply
     const activeLink = ({ isActive }: NavLinkRenderProps): CSSProperties => {
@@ -49,6 +63,12 @@ const Header = ({ userProfilePictureUrl }: HomeProps) => {
                     </div>
                     <FaArrowCircleDown className='hidden md:block text-red-600' size={15} />
                 </NavLink>
+
+                {status === "authenticated" && (
+                    <button type="button" aria-label="Log out" title="Log out" className="cursor-pointer" onClick={handleLogOut}>
+                        <FaSignOutAlt className="text-white hover:text-red-500 icon" size={20} />
+                    </button>
+                )}
             </div>
 
         </div>
