@@ -37,7 +37,7 @@ export const LottieAnimation: FC<LottieAnimationProps> = ({
                 {...remainingProps}
             />
             
-            <p className={cn("cursor-default", messageClassname)}>{message}</p>
+            <div className={cn("cursor-default", messageClassname)}>{message}</div>
         </div>
     );
 };

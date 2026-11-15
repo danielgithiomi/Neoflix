@@ -33,5 +33,5 @@ export function generateLottieAnimationPath(animationName: string): string | nul
 		return null;
 	}
 	
-	return `${import.meta.env.BASE_URL}/animations/${animationName}`
+	return `${import.meta.env.BASE_URL}animations/${animationName}`
 }
