@@ -1,5 +1,5 @@
 import Movie from './data/Movie';
-import { Client, Databases, Storage, ID, Query, AppwriteException } from 'appwrite';
+import { Account, Client, Databases, Storage, ID, Query, AppwriteException } from 'appwrite';
 
 const appwrite_base_url: string = import.meta.env.VITE_APPWRITE_BASE_URL;
 const appwrite_project_id: string = import.meta.env.VITE_APPWRITE_PROJECT_ID;
@@ -10,6 +10,8 @@ const appwrite_storage_bucket_id: string = import.meta.env.VITE_APPWRITE_STORAGE
 const appwrite_client = new Client()
    .setEndpoint(appwrite_base_url)
    .setProject(appwrite_project_id);
+
+export const appwrite_account = new Account(appwrite_client);
 
 const appwrite_database = new Databases(appwrite_client);
 const appwrite_storage_bucket = new Storage(appwrite_client);

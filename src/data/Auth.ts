@@ -5,6 +5,8 @@ export type TAuthFieldProps = {
     label: string;
     value: string;
     error?: string;
+    showLabel?: boolean;
+    placeholder?: string;
     autoComplete?: string;
     onChange: (value: string) => void;
     type?: "text" | "email" | "password";

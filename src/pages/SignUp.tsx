@@ -1,7 +1,9 @@
-import { NavLink } from "react-router-dom";
 import { FormEvent, useState } from "react";
+import { useAuth } from "@/contexts/AuthContext.tsx";
 import AuthField from "@components/AuthField.tsx";
 import AuthLayout from "@components/AuthLayout.tsx";
+import { NavLink, useNavigate } from "react-router-dom";
+import { getAuthErrorMessage } from "@libs/utils/authErrors.ts";
 import { FieldErrors, SignUpValues, validateSignUp } from "@libs/validators/authValidation.ts";
 
 const INITIAL_VALUES: SignUpValues = {
@@ -16,7 +18,11 @@ const INITIAL_VALUES: SignUpValues = {
 const SignUp = () => {
     const [values, setValues] = useState<SignUpValues>(INITIAL_VALUES);
     const [errors, setErrors] = useState<FieldErrors<SignUpValues>>({});
-    const [status, setStatus] = useState<string | null>(null);
+    const [submitError, setSubmitError] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+    const { signUp } = useAuth();
+    const navigate = useNavigate();
 
     // Editing a field clears its error until the next submit
     const updateField = (field: keyof SignUpValues) => (value: string) => {
@@ -24,21 +30,28 @@ const SignUp = () => {
         setErrors((previous) => ({ ...previous, [field]: undefined }));
     };
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         const validationErrors = validateSignUp(values);
         setErrors(validationErrors);
+        setSubmitError(null);
 
         const firstInvalidField = Object.keys(validationErrors)[0];
         if (firstInvalidField) {
-            setStatus(null);
             document.getElementById(firstInvalidField)?.focus();
             return;
         }
 
-        // Placeholder until the form is connected to Appwrite's account.create
-        setStatus("Your details look good. Sign-up isn't connected to Appwrite yet.");
+        setIsSubmitting(true);
+
+        try {
+            await signUp(values);
+            navigate("/", { replace: true });
+        } catch (error: unknown) {
+            setSubmitError(getAuthErrorMessage(error));
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -48,7 +61,7 @@ const SignUp = () => {
             footer={<>Already a member? <NavLink to="/login">Log in</NavLink></>}
         >
             <form className="auth-form" onSubmit={handleSubmit} noValidate>
-                {status && <p className="auth-status" role="status">{status}</p>}
+                {submitError && <p className="auth-status auth-status-error" role="alert">{submitError}</p>}
 
                 <div className="gap-3 grid grid-cols-2">
                     <AuthField id="firstName" label="First name" autoComplete="given-name"
@@ -66,7 +79,9 @@ const SignUp = () => {
                 <AuthField id="confirmPassword" label="Confirm password" type="password" autoComplete="new-password"
                            value={values.confirmPassword} onChange={updateField("confirmPassword")} error={errors.confirmPassword} />
 
-                <button type="submit" className="auth-submit">Create account</button>
+                <button type="submit" className="auth-submit" disabled={isSubmitting}>
+                    {isSubmitting ? "Creating account…" : "Create account"}
+                </button>
             </form>
         </AuthLayout>
     );

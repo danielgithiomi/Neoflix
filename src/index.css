@@ -180,25 +180,40 @@
             @apply relative flex items-center;
         }
 
+        & .auth-label {
+            @apply mb-1.5 font-medium text-[13px] text-gray-400;
+        }
+
         & input {
             @apply bg-[#1c1c1c]/80 px-4 py-3 border border-white/10 focus:border-red-600 rounded-xl outline-hidden w-full text-white placeholder:text-gray-500 transition-colors;
 
             &[aria-invalid="true"] {
                 @apply border-red-500;
             }
+
+            /* A value the user can read and copy but not edit */
+            &[readonly] {
+                @apply bg-transparent border-white/20 focus:border-white/40 border-dashed text-gray-300;
+            }
         }
 
-        & .auth-toggle-password {
-            @apply right-3 absolute p-1 text-gray-400 hover:text-white cursor-pointer;
+        & .auth-toggle-password,
+        & .auth-clear {
+            @apply right-3 absolute p-1 text-gray-400 hover:text-red-500 hover:scale-105 transition cursor-pointer;
         }
 
-        /* Leaves room for the show/hide button */
-        &:has(.auth-toggle-password) input {
+        /* Leaves room for the show/hide or clear button */
+        &:has(.auth-toggle-password) input,
+        &:has(.auth-clear) input {
             @apply pr-11;
         }
 
         & .auth-field-error {
             @apply mt-1 px-1 text-red-400 text-xs;
+        }
+
+        & .auth-field-hint {
+            @apply mt-1 px-1 text-gray-400 text-xs;
         }
     }
 
@@ -389,37 +404,191 @@
         @apply bg-black/5 backdrop-blur-sm p-6 md:p-8 border border-white/10 rounded-2xl;
     }
 
-    /* Profile Component */
-    .profile-picture {
-        @apply bg-black border-4 border-red-600 rounded-full w-fit h-60 overflow-hidden transition-[filter] duration-300 cursor-pointer;
-        will-change: filter;
+    /* Profile Page */
+    /* Full-bleed poster wall behind the header and the top of the page. Positioned against <main>, so it starts at the top of the window */
+    .profile-banner {
+        @apply top-0 left-1/2 absolute -ml-[50vw] w-screen h-[400px] md:h-[440px] overflow-hidden pointer-events-none;
 
-        & img {
-            @apply rounded-full w-full h-full object-cover;
+        /* Dark behind the header, lighter over the wall, then fades into the page */
+        & .profile-shade {
+            @apply absolute inset-0;
+            background: linear-gradient(
+                to bottom,
+                #101010 0%,
+                rgba(16, 16, 16, 0.3) 24%,
+                rgba(16, 16, 16, 0.55) 62%,
+                #101010 100%
+            );
+        }
+    }
+
+    .profile {
+        @apply z-10 relative pb-16;
+    }
+
+    /* Photo, name, and stats. Stacked and centred on phones, in a row from tablets up */
+    .profile-identity {
+        @apply flex md:flex-row flex-col md:flex-wrap xl:flex-nowrap items-center md:items-end gap-x-7 gap-y-5 mt-10 md:mt-32 md:text-left text-center;
+
+        /* Hovering or focusing the photo shows it can be changed: it dims under a pencil, and a camera badge appears on the ring */
+        & .profile-avatar {
+            @apply relative rounded-full w-32 md:w-40 h-32 md:h-40 cursor-pointer shrink-0;
+
+            & .profile-avatar-photo {
+                font-family: "Bebas Neue", sans-serif;
+                @apply place-items-center relative grid bg-neutral-800 border-4 border-red-600 rounded-full w-full h-full overflow-hidden text-6xl text-neutral-300 tracking-wider;
+            }
+
+            & img {
+                @apply w-full h-full object-cover;
+            }
+
+            & .profile-avatar-overlay {
+                @apply place-items-center absolute inset-0 grid bg-black/60 opacity-0 text-white transition-opacity duration-300;
+            }
+
+            /* Centred on the ring's bottom-right edge. Outside the photo so the ring doesn't clip it */
+            & .profile-avatar-camera {
+                @apply right-0.5 md:right-1.5 bottom-0.5 md:bottom-1.5 absolute place-items-center grid bg-red-600 opacity-0 border-[#101010] border-[3px] rounded-full w-9 h-9 text-white scale-75 transition duration-300;
+            }
+
+            &:hover,
+            &:focus-visible {
+                & .profile-avatar-overlay {
+                    @apply opacity-100;
+                }
+
+                & .profile-avatar-camera {
+                    @apply opacity-100 scale-100;
+                }
+            }
         }
 
-        &:hover {
-            & .overlay {
-                @apply top-0 left-0 z-10 bg-black opacity-90 w-full h-full;
+        & .profile-eyebrow {
+            @apply mb-1.5 font-bold text-[13px] text-gray-200 uppercase tracking-[0.14em];
+        }
+
+        & .profile-name {
+            font-family: "Bebas Neue", sans-serif;
+            @apply mx-0 max-w-none font-normal text-white text-6xl md:text-[88px] md:text-left leading-[0.9] tracking-wide break-words;
+        }
+
+        & .profile-handle {
+            @apply mt-2.5 text-gray-300 break-words;
+        }
+    }
+
+    /* Sits beside the name on wide screens, and on its own row below it on narrower ones so the name keeps its width */
+    .profile-chips {
+        @apply flex flex-wrap justify-center md:justify-start xl:justify-end gap-2 md:w-full xl:w-auto;
+
+        & li {
+            @apply flex items-center gap-2 bg-black/45 px-4 py-2 border border-white/20 rounded-full text-gray-200 text-sm whitespace-nowrap;
+        }
+    }
+
+    /* Form on the left, favourites and genres on the right. One column below desktop */
+    .profile-content {
+        @apply gap-6 lg:gap-8 grid grid-cols-1 lg:grid-cols-5 mt-11;
+    }
+
+    .profile-card {
+        @apply bg-[#121212]/75 p-6 sm:p-8 border border-white/10 rounded-3xl min-w-0;
+
+        & h2 {
+            @apply text-xl sm:text-2xl leading-tight;
+        }
+
+        & .profile-card-subtitle {
+            @apply mt-1 text-gray-400 text-sm;
+        }
+
+        & .profile-card-header {
+            @apply flex justify-between items-baseline gap-4;
+
+            & a {
+                @apply font-medium text-red-400 hover:text-red-300 text-sm transition-colors;
+            }
+        }
+
+        & .profile-empty {
+            @apply mt-4 text-gray-400 text-sm;
+
+            & a {
+                @apply font-medium text-red-400 hover:text-red-300 transition-colors;
             }
         }
     }
 
-    .profile-form {
-        @apply p-10 border-2 border-white rounded-xl;
+    .profile-form-grid {
+        @apply gap-x-6 gap-y-5 grid grid-cols-1 sm:grid-cols-2 mt-6;
+    }
 
-        & label {
-            @apply font-bold uppercase;
+    /* Same pill language as the genre chips on the home page */
+    .profile-gender {
+        @apply min-w-0;
+
+        & legend {
+            @apply mb-1.5 font-medium text-[13px] text-gray-400;
         }
 
-        & input,
-        select {
-            @apply my-2 px-2 py-3 border-1 border-red-600 focus:border-2 rounded-lg outline-0 text-white;
+        & .profile-gender-options {
+            @apply flex flex-wrap gap-2;
+        }
+
+        & button {
+            @apply bg-black/30 hover:border-white/50 px-5 py-3 border border-white/20 rounded-full font-medium text-gray-200 text-sm capitalize transition-colors cursor-pointer;
+
+            &[aria-pressed="true"] {
+                @apply bg-red-600 border-red-600 text-white;
+            }
         }
     }
 
-    .submit-btn {
-        @apply bg-red-600 hover:bg-red-800 mt-8 px-10 py-2 border-2 border-white rounded-lg w-full font-bold text-white uppercase tracking-wide cursor-pointer;
+    .profile-actions {
+        @apply flex flex-wrap gap-3 mt-7;
+
+        /* The auth pages stretch this button across the card */
+        & .auth-submit {
+            @apply mt-0 px-7 w-auto;
+        }
+
+        & .profile-cancel {
+            @apply hover:bg-white/5 px-6 py-3 border border-white/20 rounded-xl font-medium text-gray-200 transition-colors cursor-pointer;
+        }
+    }
+
+    .profile-posters {
+        @apply gap-3 grid grid-cols-4 mt-4;
+
+        & a {
+            @apply block bg-neutral-800 rounded-lg aspect-[2/3] overflow-hidden;
+        }
+
+        & img {
+            @apply w-full h-full object-cover hover:scale-105 transition-transform duration-300;
+        }
+    }
+
+    /* Genre name, bar, count */
+    .profile-genres {
+        @apply flex flex-col gap-3 mt-4;
+
+        & li {
+            @apply items-center gap-3 grid grid-cols-[5.75rem_minmax(0,1fr)_1.5rem] text-sm;
+        }
+
+        & .profile-genre-track {
+            @apply bg-white/10 rounded-full h-2 overflow-hidden;
+        }
+
+        & .profile-genre-bar {
+            @apply block bg-red-600 rounded-full h-full;
+        }
+
+        & .profile-genre-count {
+            @apply text-gray-300 text-right;
+        }
     }
 }
 
