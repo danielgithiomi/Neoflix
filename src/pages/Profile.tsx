@@ -6,6 +6,7 @@ import { NavLink } from "react-router-dom";
 import { FormEvent, useState } from "react";
 import AuthField from "@components/AuthField.tsx";
 import PosterWall from "@components/PosterWall.tsx";
+import ProfilePictureDialog from "@components/ProfilePictureDialog.tsx";
 import { FaCamera, FaFilm, FaHeart, FaPen, FaStar } from "react-icons/fa";
 import { useMovieContext } from "../contexts/FavouriteContext.tsx";
 import { FieldErrors, ProfileValues, validateProfile } from "@libs/validators/authValidation.ts";
@@ -21,6 +22,7 @@ const GENDERS: SEX[] = Object.values(SEX);
 
 const Profile = ({ user }: ProfileProps) => {
     const { favourites } = useMovieContext();
+    const [pictureDialogOpen, setPictureDialogOpen] = useState(false);
 
     // The password starts empty: leaving it blank keeps the current one
     const initialValues: ProfileValues = {
@@ -85,6 +87,7 @@ const Profile = ({ user }: ProfileProps) => {
 
     return (
         <>
+            {pictureDialogOpen && <ProfilePictureDialog onClose={() => setPictureDialogOpen(false)} />}
             <div className="profile-banner" aria-hidden="true">
                 <PosterWall />
                 <div className="profile-shade" />
@@ -93,8 +96,8 @@ const Profile = ({ user }: ProfileProps) => {
             <section className="profile">
 
                 <header className="profile-identity">
-                    {/* Only shows that the photo can be changed for now: clicking does nothing until uploads are built */}
-                    <button type="button" className="profile-avatar" aria-label="Change profile picture">
+                    <button type="button" className="profile-avatar" aria-label="Change profile picture"
+                            aria-haspopup="dialog" onClick={() => setPictureDialogOpen(true)}>
                         <span className="profile-avatar-photo">
                             {user.profile_image_url
                                 ? <img src={user.profile_image_url} alt="" />
