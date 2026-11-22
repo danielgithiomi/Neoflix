@@ -31,13 +31,13 @@ const Search = ({ searchTerm, setSearchTerm }: TSearchProps) => {
                 Search movies
             </label>
             <input
-                ref={inputRef}
                 type="search"
+                ref={inputRef}
                 id="movie-search"
                 value={searchTerm}
+                autoComplete="off"
                 onChange={handleSearch}
                 placeholder="Search for any movie…"
-                autoComplete="off"
             />
             {searchTerm && (
                 <button type="button" className="search-clear" aria-label="Clear search" onClick={clearSearch}>

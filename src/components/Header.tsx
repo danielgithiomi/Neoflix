@@ -2,8 +2,8 @@ import { CSSProperties } from 'react';
 import { useAuth } from '@/contexts/AuthContext.tsx';
 import neoflixLogo from '../assets/brand/neoflix-logo.svg';
 import { getAuthErrorMessage } from '@libs/utils/authErrors.ts';
-import { NavLink, NavLinkRenderProps, useNavigate } from "react-router-dom";
 import { FaArrowCircleDown, FaBell, FaSearch, FaSignOutAlt } from "react-icons/fa";
+import { NavLink, NavLinkRenderProps, useLocation, useNavigate } from "react-router-dom";
 
 interface HomeProps {
     userProfilePictureUrl: string;
@@ -12,6 +12,7 @@ interface HomeProps {
 const Header = ({ userProfilePictureUrl }: HomeProps) => {
 
     const navigate = useNavigate();
+    const { pathname } = useLocation();
     const { status, logOut } = useAuth();
 
     const handleLogOut = async () => {
@@ -22,6 +23,17 @@ const Header = ({ userProfilePictureUrl }: HomeProps) => {
             alert(getAuthErrorMessage(error));
         }
     };
+
+    const showSearchIcon = pathname === "/";
+
+    const handleOnSearchFocus = () => {
+        const searchBoxElement = document.getElementById("movie-search");
+
+        if (searchBoxElement) {
+            searchBoxElement.scrollIntoView({ behavior: "smooth", block: "center" });
+            searchBoxElement.focus();
+        }
+    }
 
     // Inactive links get no inline style, so their text-white / hover:text-red-500 classes apply
     const activeLink = ({ isActive }: NavLinkRenderProps): CSSProperties => {
@@ -52,9 +64,11 @@ const Header = ({ userProfilePictureUrl }: HomeProps) => {
 
             <div className="flex flex-row items-center gap-5 md:mr-20 user">
                 {/* Search lives in the home page hero, so phones skip these to save space */}
-                <NavLink to="/" aria-label="Search" className="hidden sm:block">
-                    <FaSearch className="text-white hover:text-red-500 icon" size={20} />
-                </NavLink>
+                {showSearchIcon && (
+                    <button type="button" aria-label="Search" className="hidden sm:block" onClick={handleOnSearchFocus}>
+                        <FaSearch className="text-white hover:text-red-500 icon" size={20} />
+                    </button>
+                )}
                 <FaBell className="hidden sm:block text-white hover:text-red-500 icon" size={20} />
 
                 <NavLink to="/profile" aria-label="Your profile" className="flex flex-row items-center gap-1 user-profile">

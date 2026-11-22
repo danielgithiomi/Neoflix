@@ -91,7 +91,7 @@ const Home = () => {
 						wrapperClassname="mb-12"
 						animationPath={generateLottieAnimationPath('no_film_found.json')!}
 						message={<p>No Movies Found that match: <span
-							className="font-bold underline underline-offset-4 uppercase! text-red-500">{searchDebounce}</span></p>}
+							className="font-bold text-red-500 underline underline-offset-4 uppercase!">{searchDebounce}</span></p>}
 					/>
 				)
 			)}

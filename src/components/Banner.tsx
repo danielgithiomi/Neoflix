@@ -5,8 +5,8 @@ import { Dispatch, SetStateAction } from 'react';
 
 type TBannerProps = {
     searchTerm: string;
-    setSearchTerm: Dispatch<SetStateAction<string>>;
     selectedGenre: number | null;
+    setSearchTerm: Dispatch<SetStateAction<string>>;
     setSelectedGenre: Dispatch<SetStateAction<number | null>>;
 };
 
