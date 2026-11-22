@@ -26,6 +26,13 @@ function App() {
 
     const searchBoxRef: MutableRefObject<HTMLDivElement | null> =
         useRef<HTMLDivElement | null>(null);
+        
+    const focusOnSearchBox = () => {
+        if (searchBoxRef.current) {
+            searchBoxRef.current.focus();
+            searchBoxRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    }
 
     const resourceUrl = useQuery({
         queryKey: ["user_profile_picture", userProfilePictureId],
@@ -53,8 +60,8 @@ function App() {
                     <Routes>
                         <Route
                             index
-                            errorElement={<ErrorComponent />}
                             element={<Home />}
+                            errorElement={<ErrorComponent />}
                         />
                         <Route path="favourites" element={<Favourites />} />
                         <Route

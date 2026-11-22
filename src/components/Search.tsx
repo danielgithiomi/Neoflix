@@ -5,9 +5,10 @@ import { Dispatch, SetStateAction, useRef } from "react";
 type TSearchProps = {
     searchTerm: string;
     setSearchTerm: Dispatch<SetStateAction<string>>;
+    searchBoxRef?: React.RefObject<HTMLInputElement | null>;
 };
 
-const Search = ({ searchTerm, setSearchTerm }: TSearchProps) => {
+const Search = ({ searchTerm, setSearchTerm, searchBoxRef }: TSearchProps) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,13 +32,13 @@ const Search = ({ searchTerm, setSearchTerm }: TSearchProps) => {
                 Search movies
             </label>
             <input
-                ref={inputRef}
                 type="search"
                 id="movie-search"
                 value={searchTerm}
-                onChange={handleSearch}
-                placeholder="Search for any movie…"
                 autoComplete="off"
+                onChange={handleSearch}
+                ref={searchBoxRef || inputRef}
+                placeholder="Search for any movie…"
             />
             {searchTerm && (
                 <button type="button" className="search-clear" aria-label="Clear search" onClick={clearSearch}>

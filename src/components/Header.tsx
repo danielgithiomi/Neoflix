@@ -6,10 +6,12 @@ import { FaArrowCircleDown, FaBell, FaSearch, FaSignOutAlt } from "react-icons/f
 import { NavLink, NavLinkRenderProps, useLocation, useNavigate } from "react-router-dom";
 
 interface HomeProps {
+    focusOnSearchBox?: () => void;
     userProfilePictureUrl: string;
+    searchBoxRef?: React.RefObject<HTMLDivElement | null>;
 }
 
-const Header = ({ userProfilePictureUrl }: HomeProps) => {
+const Header = ({ focusOnSearchBox, userProfilePictureUrl }: HomeProps) => {
 
     const navigate = useNavigate();
     const { pathname } = useLocation();
@@ -56,9 +58,9 @@ const Header = ({ userProfilePictureUrl }: HomeProps) => {
             <div className="flex flex-row items-center gap-5 md:mr-20 user">
                 {/* Search lives in the home page hero, so phones skip these to save space */}
                 {showSearchIcon && (
-                    <NavLink to="/search" aria-label="Search" className="hidden sm:block">
+                    <button type="button" aria-label="Search" className="hidden sm:block" onClick={focusOnSearchBox}>
                         <FaSearch className="text-white hover:text-red-500 icon" size={20} />
-                    </NavLink>
+                    </button>
                 )}
                 <FaBell className="hidden sm:block text-white hover:text-red-500 icon" size={20} />
 
