@@ -8,7 +8,6 @@ import Header from "./components/Header.tsx";
 import ErrorComponent from "./pages/Error.tsx";
 import Favourites from "./pages/Favourites.tsx";
 import { useQuery } from "@tanstack/react-query";
-import { MutableRefObject, useRef } from "react";
 import MovieDetails from "./pages/MovieDetails.tsx";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { FavouriteProvider } from "./contexts/FavouriteContext.tsx";
@@ -23,16 +22,6 @@ const AUTH_PATHS: string[] = ["/login", "/signup"];
 function App() {
     const { pathname } = useLocation();
     const isAuthPage: boolean = AUTH_PATHS.includes(pathname);
-
-    const searchBoxRef: MutableRefObject<HTMLDivElement | null> =
-        useRef<HTMLDivElement | null>(null);
-        
-    const focusOnSearchBox = () => {
-        if (searchBoxRef.current) {
-            searchBoxRef.current.focus();
-            searchBoxRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-        }
-    }
 
     const resourceUrl = useQuery({
         queryKey: ["user_profile_picture", userProfilePictureId],

@@ -6,12 +6,11 @@ import { FaArrowCircleDown, FaBell, FaSearch, FaSignOutAlt } from "react-icons/f
 import { NavLink, NavLinkRenderProps, useLocation, useNavigate } from "react-router-dom";
 
 interface HomeProps {
-    focusOnSearchBox?: () => void;
     userProfilePictureUrl: string;
     searchBoxRef?: React.RefObject<HTMLDivElement | null>;
 }
 
-const Header = ({ focusOnSearchBox, userProfilePictureUrl }: HomeProps) => {
+const Header = ({ userProfilePictureUrl }: HomeProps) => {
 
     const navigate = useNavigate();
     const { pathname } = useLocation();
@@ -27,6 +26,15 @@ const Header = ({ focusOnSearchBox, userProfilePictureUrl }: HomeProps) => {
     };
 
     const showSearchIcon: boolean = Boolean(pathname === "/");
+    
+    const handleOnSearchFocus = () => {
+        const searchBoxElement = document.getElementById("movie-search");
+
+        if (searchBoxElement) {
+            searchBoxElement.scrollIntoView({ behavior: "smooth", block: "center" });
+            searchBoxElement.focus();
+        }
+    }
 
     // Inactive links get no inline style, so their text-white / hover:text-red-500 classes apply
     const activeLink = ({ isActive }: NavLinkRenderProps): CSSProperties => {
@@ -58,7 +66,7 @@ const Header = ({ focusOnSearchBox, userProfilePictureUrl }: HomeProps) => {
             <div className="flex flex-row items-center gap-5 md:mr-20 user">
                 {/* Search lives in the home page hero, so phones skip these to save space */}
                 {showSearchIcon && (
-                    <button type="button" aria-label="Search" className="hidden sm:block" onClick={focusOnSearchBox}>
+                    <button type="button" aria-label="Search" className="hidden sm:block" onClick={handleOnSearchFocus}>
                         <FaSearch className="text-white hover:text-red-500 icon" size={20} />
                     </button>
                 )}

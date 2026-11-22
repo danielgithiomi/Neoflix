@@ -1,7 +1,7 @@
+import {useState} from "react";
 import Movie from "../data/Movie.ts";
 import {useDebounce} from "react-use";
 import {GENRES} from "../data/Genres.ts";
-import {useState, RefObject} from "react";
 import Error from "../components/Error.tsx";
 import Banner from "../components/Banner.tsx";
 import {useQuery} from "@tanstack/react-query";
@@ -10,10 +10,6 @@ import MovieCard from "../components/MovieCard.tsx";
 import {fetchMovies} from "../services/MovieService.ts";
 import {LottieAnimation} from "../components/Lottie.tsx";
 import { generateLottieAnimationPath } from '@libs/utils';
-
-interface HomeProps {
-	searchBoxRef?: RefObject<HTMLDivElement | null>;
-}
 
 const Home = () => {
 	// State Managers
