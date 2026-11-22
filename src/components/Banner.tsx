@@ -7,7 +7,6 @@ type TBannerProps = {
     searchTerm: string;
     selectedGenre: number | null;
     setSearchTerm: Dispatch<SetStateAction<string>>;
-    searchBoxRef?: React.RefObject<HTMLDivElement | null>;
     setSelectedGenre: Dispatch<SetStateAction<number | null>>;
 };
 

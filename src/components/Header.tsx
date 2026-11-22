@@ -7,7 +7,6 @@ import { NavLink, NavLinkRenderProps, useLocation, useNavigate } from "react-rou
 
 interface HomeProps {
     userProfilePictureUrl: string;
-    searchBoxRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 const Header = ({ userProfilePictureUrl }: HomeProps) => {
@@ -25,8 +24,8 @@ const Header = ({ userProfilePictureUrl }: HomeProps) => {
         }
     };
 
-    const showSearchIcon: boolean = Boolean(pathname === "/");
-    
+    const showSearchIcon = pathname === "/";
+
     const handleOnSearchFocus = () => {
         const searchBoxElement = document.getElementById("movie-search");
 
