@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Navigate, NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext.tsx";
 import AuthField from "../components/AuthField.tsx";
 import AuthLayout from "../components/AuthLayout.tsx";
@@ -15,10 +15,12 @@ const Login = () => {
     const [values, setValues] = useState<LoginValues>(INITIAL_VALUES);
     const [errors, setErrors] = useState<FieldErrors<LoginValues>>({});
     const [submitError, setSubmitError] = useState<string | null>(null);
-    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [submission, setSubmission] = useState<"idle" | "pending" | "success">("idle");
+    const isSubmitting = submission !== "idle";
 
-    const { logIn } = useAuth();
-    const navigate = useNavigate();
+    const { logIn, status } = useAuth();
+    const { state } = useLocation();
+    const destination = state?.from === "/favourites" ? "/favourites" : "/";
 
     // Editing a field clears its error until the next submit
     const updateField = (field: keyof LoginValues) => (value: string) => {
@@ -39,16 +41,21 @@ const Login = () => {
             return;
         }
 
-        setIsSubmitting(true);
+        setSubmission("pending");
 
         try {
             await logIn(values);
-            navigate("/", { replace: true });
+            setSubmission("success");
         } catch (error: unknown) {
             setSubmitError(getAuthErrorMessage(error));
-            setIsSubmitting(false);
+            setSubmission("idle");
         }
     };
+
+    // Wait until the guard can see the updated session before entering a protected route.
+    if (submission === "success" && status === "authenticated") {
+        return <Navigate to={destination} replace />;
+    }
 
     return (
         <AuthLayout

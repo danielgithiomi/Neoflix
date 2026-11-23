@@ -7,6 +7,7 @@ import Profile from "./pages/Profile.tsx";
 import Header from "./components/Header.tsx";
 import ErrorComponent from "./pages/Error.tsx";
 import Favourites from "./pages/Favourites.tsx";
+import RequireAuth from "./components/RequireAuth.tsx";
 import { useQuery } from "@tanstack/react-query";
 import MovieDetails from "./pages/MovieDetails.tsx";
 import { Route, Routes, useLocation } from "react-router-dom";
@@ -52,7 +53,9 @@ function App() {
                             element={<Home />}
                             errorElement={<ErrorComponent />}
                         />
-                        <Route path="favourites" element={<Favourites />} />
+                        <Route element={<RequireAuth returnTo="/favourites" />}>
+                            <Route path="favourites" element={<Favourites />} />
+                        </Route>
                         <Route
                             path="profile"
                             element={<Profile user={currentUser} />}
