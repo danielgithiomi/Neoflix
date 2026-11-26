@@ -7,12 +7,13 @@ interface ProfilePictureDialogProps {
 }
 
 export default function ProfilePictureDialog({ onClose }: ProfilePictureDialogProps) {
-    const dialog = useRef<HTMLDialogElement>(null);
     const input = useRef<HTMLInputElement>(null);
-    const [file, setFile] = useState<File | null>(null);
-    const [preview, setPreview] = useState("");
+    const dialog = useRef<HTMLDialogElement>(null);
+    
     const [error, setError] = useState("");
+    const [preview, setPreview] = useState("");
     const [dragging, setDragging] = useState(false);
+    const [file, setFile] = useState<File | null>(null);
 
     useEffect(() => {
         const element = dialog.current;
@@ -59,15 +60,15 @@ export default function ProfilePictureDialog({ onClose }: ProfilePictureDialogPr
                     event.preventDefault();
                     onClose();
                 }} aria-labelledby="picture-dialog-title"
-                className="m-auto w-[min(28rem,calc(100%-2rem))] rounded-3xl border border-white/15 bg-neutral-900 p-6 text-white shadow-2xl backdrop:bg-black/75">
-            <div className="flex items-center justify-between gap-4">
+                className="bg-neutral-900 backdrop:bg-black/75 shadow-2xl m-auto p-6 border border-white/15 rounded-3xl w-[min(28rem,calc(100%-2rem))] text-white">
+            <div className="flex justify-between items-center gap-4">
                 <h2 id="picture-dialog-title" className="text-xl">Choose a profile picture</h2>
                 <button type="button" aria-label="Close" onClick={onClose}
-                        className="cursor-pointer rounded-full p-2 text-gray-400 hover:bg-white/10 hover:text-white">
+                        className="hover:bg-white/10 p-2 rounded-full text-gray-400 hover:text-white cursor-pointer">
                     <FaTimes />
                 </button>
             </div>
-            <p className="mt-2 text-sm text-gray-300">Preview a picture from your device.</p>
+            <p className="mt-2 text-gray-300 text-sm">Preview a picture from your device.</p>
             <input ref={input} type="file" hidden accept={profilePictureAccept}
                    onChange={event => {
                        selectFiles(event.currentTarget.files);
@@ -88,17 +89,17 @@ export default function ProfilePictureDialog({ onClose }: ProfilePictureDialogPr
                     }}
                     className={`mt-5 flex w-full cursor-pointer flex-col items-center gap-3 rounded-2xl border-2 border-dashed px-4 py-7 text-center hover:border-red-500 ${dragging ? "border-red-500 bg-red-500/10" : "border-white/25"}`}>
                 {preview ? (
-                    <img src={preview} alt="Profile picture preview" className="size-24 rounded-full border-2 border-red-600 object-cover"
+                    <img src={preview} alt="Profile picture preview" className="border-2 border-red-600 rounded-full size-24 object-cover"
                          onError={() => {
                              setPreview("");
                              setError("This image could not be displayed. Try another file.");
                          }} />
-                ) : <FaCloudUploadAlt aria-hidden="true" className="text-4xl text-red-500" />}
+                ) : <FaCloudUploadAlt aria-hidden="true" className="text-red-500 text-4xl" />}
                 <span className="font-semibold">{preview ? "Choose another image" : "Choose an image"}</span>
-                <span className="text-sm text-gray-400">or drop a JPG, JPEG, PNG or WebP here</span>
+                <span className="text-gray-400 text-sm">or drop a JPG, JPEG, PNG or WebP here</span>
             </button>
-            <p role="status" className="mt-3 truncate text-sm text-gray-300 empty:hidden">{preview && file?.name}</p>
-            {error && <p role="alert" className="mt-3 text-sm text-red-400">{error}</p>}
+            <p role="status" className="empty:hidden mt-3 text-gray-300 text-sm truncate">{preview && file?.name}</p>
+            {error && <p role="alert" className="mt-3 text-red-400 text-sm">{error}</p>}
         </dialog>
     );
 }
